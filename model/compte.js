@@ -103,23 +103,28 @@ class Comptes {
   }
 
   static async allComptes_inf (id) {
-    try {
-      const db = new Database();
-      const query = `SELECT
-      sc.name,
-      sc.nbr,
-        
-          ci.id,
-          ci.name,
-          ci.nbr    
-      FROM 
-        sous_comptes sc
-      JOIN 
-        comptes_inf ci ON  ci.sous_comptes_id = sc.id
-      WHERE
-        sc.id = $1;`
-    } catch (error) {
+    const db = new Database();
+    const query = `SELECT
+    sc.name,
+    sc.nbr,
       
+        ci.id,
+        ci.name,
+        ci.nbr    
+    FROM 
+      sous_comptes sc
+    JOIN 
+      comptes_inf ci ON  ci.sous_comptes_id = sc.id
+    WHERE
+      sc.id = $1;`
+    
+    try {
+          const result = await db.query(query, [id]);
+          return result;
+    } catch (error) {
+
+      console.error(`Error while getting comptes by id ${id} : `, error);
+
     }
   }
 
@@ -180,7 +185,7 @@ class Comptes {
     } catch (error) {
         throw new Error(error.message);
     }
-}
+  }
 
 static async AllElementByNameOrNbr(detail) {
   const db = new Database();

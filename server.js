@@ -15,12 +15,7 @@ const app = express();
 // Définir le répertoire contenant les fichiers statiques (fichiers HTML)
 let initial_path = path.join(__dirname, 'frontend');
 
-
-
 app.use(express.static(initial_path));
-
-
-
 
 const initializePassport = require("./passportConfig");
 

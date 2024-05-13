@@ -47,6 +47,19 @@ const getAllComptesById = async (req,res) => {
     }
   }
 
+  const getAllComptes_infById = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+      const comptes_inf = await Comptes.allComptes_inf(id);
+      res.status(200).json({comptes_inf})
+    } catch (error) {
+      console.error("Erreur lors de la récupération des sous_comptes : ", error);
+      res.status(500).json({ error: "Erreur lors de la récupération des sous_comptes" });
+    }
+
+  }
+
   const getDescription = async (req, res) => {
       const {id, table} = req.body;
 
@@ -74,5 +87,6 @@ module.exports = {
   getAllComptesById,
   getAllSousComptesById,
   getDescription,
-  getElementByNameOrByNbr
+  getElementByNameOrByNbr,
+  getAllComptes_infById
 };
