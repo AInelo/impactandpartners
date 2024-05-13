@@ -91,13 +91,51 @@ const getDescription = async (id, table) => {
 
 // -------------------- Displaying all Comptes_inf ------------------------------------//
 
-const getAllComptes_inf = async () => {
+const getAllComptes_infById = async (id) => {
   const ComptesInfDOM = document.getElementById('showComptes_inf');
 
   try {
     const {
       data : {CompesInf}
-    } = await axios.get(``)
+    } = await axios.get(`api/v1/comptes/allcomptesinfbyid/${id}`)
+    if (CompesInf.length < 1) {
+      ComptesInfDOM.innerHTML = '<h3 class="empty-list">il n\'y a pas de sous_comptes sélectionné un autre comptes, merci !</h3>';
+    
+    }
+
+    const allSousComptes = CompesInf
+      .map((sous_compte) => {
+        const { id, name, nbr } = sous_compte;
+
+        return ` 
+          <div class="row">
+            <div id=${nbr} class="col-auto">
+              <span class="avatar" style="background-image: url(./assets/images/accounting.png)"></span>
+            </div>
+            <div class="col">
+          
+            <div class="badge bg-primary"></div>
+          
+                <strong>${nbr} ||</strong> ${name}
+              </div>
+              <div class="wrapperComptes">
+                <div id="${id}" name="sous_comptes" class="descriptionClass">Description</div>
+                <button id="${id}" class="sous_comptes button-80" role="button">Voir plus</button>
+              </div>
+              
+            </div>
+
+            
+          </div>`;
+      })
+      .join("");
+
+    // const firstClassComptesName = comptes[0].class_comptes_name;
+
+    ComptesInfDOM.innerHTML = allSousComptes;
+    // nameOfAllComptesDOM.innerText = firstClassComptesName ;
+
+
   } catch (error) {
     
   }
@@ -384,7 +422,10 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("click", async (e) => {
     if (e.target.classList.contains("sous_comptes")) {
       e.preventDefault();
-      const Sous_comptesClicked = e.target.id; 
+      const Sous_comptesClicked = e.target.id;
+      await getAllComptes_infById(Sous_comptesClicked);
+      const BoxComptesInfShowing = document.getElementById("showComptes_inf");
+      BoxComptesInfShowing.scrollIntoView({ behavior: 'smooth' })
     }
   })
 })
