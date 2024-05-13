@@ -89,8 +89,29 @@ const getDescription = async (id, table) => {
   }
 };
 
-// ------------------   Displaying all sous comptes -----------------------------------//
+// -------------------- Displaying all Comptes_inf ------------------------------------//
 
+const getAllComptes_inf = async () => {
+  const ComptesInfDOM = document.getElementById('showComptes_inf');
+
+  try {
+    const {
+      data : {CompesInf}
+    } = await axios.get(``)
+  } catch (error) {
+    
+  }
+
+}
+
+
+
+
+
+
+
+
+// ------------------   Displaying all sous comptes -----------------------------------//
 
 const getSousComptesAndDisplayByComptes = async (id) => {
   const sousComptesDOM = document.getElementById("showSousComptes");
@@ -215,7 +236,7 @@ const getClassesAndDisplayByTypesClasse = async (id, classesDomm) => {
     } = await axios.get(`/api/v1/comptes/allclassesbyid/${id}`);
     if (classes.length < 1) {
       return;
-    }
+    } 
     const allClasses = classes
       .map((classe) => {
         const { nbr, name, id } = classe;
@@ -248,12 +269,43 @@ const getClassesAndDisplayByTypesClasse = async (id, classesDomm) => {
 // ------------------   Get And Display all comptes of Searching input -----------------------------------//
 
 const getElementBySearching = async () => {
-  const SearchingElement = document.getElementById();
+  const SearchingElement = document.getElementById().value;
   const SearchingTriggerButton = document.getElementById();
   const SearchingResultDOM = document.getElementById();
 
   try {
-    
+    const requestBody = {
+      "detail": SearchingElement
+    };
+    const  {
+      data : {ComptesFind}
+    } = await axios.post('/api/v1/comptes/elementsearch', requestBody);
+    if (ComptesFind.length < 1) {
+      
+    }
+    const allComptesFind = ComptesFind
+      .map((compte_inf) => {
+        const { nbr, name, id } = compte_inf;
+        return `<div class="col-6">
+            <div  style="cursor: pointer!important;" class="row g-3 align-items-center" >
+              <a class="col-auto">
+                <span class="avatar" style="background-image: url(./assets/images/accounting_classes.png)">
+                  <span class="badge bg-green"></span></span>
+              </a>
+              <div class="col text-truncate">
+                <a  class="text-reset d-block text-truncate">${name}</a>
+                <div class="wrapperComptes">
+                  <div class="text-muted text-truncate mt-n1 classes-name">${nbr}</div> 
+                  <button id="${id}" class="classes_comptes button-80" role="button">Voir comptes</button>
+                </div>
+                <div id="${id}" name="classes_comptes" class="descriptionClass">Description</div>
+              </div>
+            </div>
+          </div>`;
+      })
+      .join("");
+    classesDOM.innerHTML = allComptesFind;
+
   } catch (error) {
     
   }
@@ -300,7 +352,8 @@ for (let i = 0; i < choiceBtn.length; i++) {
   });
 }
 
-const a = 1;
+// const a = 1;
+
 
 document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("click", async (e) => {
@@ -320,13 +373,21 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       const compteClickedId = e.target.id;
       await getSousComptesAndDisplayByComptes(compteClickedId);
-      const boxSousComptesShowing = document.getElementById(
-        "BoxSousComptesShowing"
-      );
+      const boxSousComptesShowing = document.getElementById("BoxSousComptesShowing");
       boxSousComptesShowing.scrollIntoView({ behavior: "smooth" });
     }
   });
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("click", async (e) => {
+    if (e.target.classList.contains("sous_comptes")) {
+      e.preventDefault();
+      const Sous_comptesClicked = e.target.id; 
+    }
+  })
+})
 
 document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("click", async (e) => {

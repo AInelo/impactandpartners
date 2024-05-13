@@ -116,7 +116,7 @@ class Comptes {
     JOIN 
       comptes_inf ci ON  ci.sous_comptes_id = sc.id
     WHERE
-      sc.id = $1;`
+      sc.id = $1;`;
     
     try {
           const result = await db.query(query, [id]);
