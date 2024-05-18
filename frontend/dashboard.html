@@ -357,6 +357,23 @@
         <!-- Page body -->
         <div class="page-body">
           <div class="container-xl">
+
+            <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+              <div class="offcanvas-header">
+                <h2 class="offcanvas-title" id="offcanvasTopLabel">Top offcanvas</h2>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <div class="offcanvas-body">
+                <div>
+                  Veuillez Choissir entre la LISTE DES COMPTES - SYSCOHADA RÉVISÉ ou LISTE DES COMPTES - DES ENTITÉS À BUT NON LUCRATIF
+                </div>
+                <div class="mt-3">
+                  <button  class="CloseModaleBtn btn btn-primary" type="button" data-bs-dismiss="offcanvas">
+                    Fermer
+                  </button>
+                </div>
+              </div>
+            </div>
             <div class="row row-deck row-cards">
               
               <div class="col-sm-6 col-lg-3">
@@ -442,7 +459,7 @@
                           SYSCOHADA RÉVISÉ
                         </div>
                         <div class="small mt-1">
-                          <span id="lucratif" class="badge bg-green hidden"></span> 
+                          <span id="lucratif" class="TypeClasseBadge badge bg-green hidden"></span> 
                         </div>
                       </div>
                       <div class="col-auto">
@@ -473,7 +490,7 @@
                           DES ENTITÉS À BUT NON LUCRATIF
                         </div>
                         <div class="small mt-1">
-                          <span id="nonLucratif" class="badge bg-green hidden"></span>
+                          <span id="nonLucratif" class="TypeClasseBadge badge bg-green hidden"></span>
                         </div>
                       </div>
                       <div class="col-auto">
@@ -576,12 +593,7 @@
                   <div class="row g-4">
                     <div id="descriptionDOM" class="col-12 markdown">
                       <h1>Détail sur le compte</h1>
-                      
-                      <!-- <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque iusto fugit error eius nesciunt magnam voluptate illum similique corrupti alias vitae voluptatibus quos at assumenda ipsa qui, voluptas hic distinctio!</p> -->
-
-                      <!-- <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti, corporis corrupti rerum nisi eaque sequi ipsa vel itaque molestias magni temporibus exercitationem impedit repudiandae rem, debitis autem numquam excepturi ea.</p> -->
                     </div>
-                    
                   </div>
                   
                 </div>
@@ -595,7 +607,6 @@
               
               
               <div class="col-lg-6">
-
                 <div id="BoxSousComptesShowing" class="row row-cards">
 
                   <!-- START OF ACCOUNT SEARCHING BOX  -->
@@ -605,10 +616,10 @@
                       <div class="col">
                         <input id="SearchingDetail" type="text" class="form-control" placeholder="Search for…">
                       </div>
-                      <div id="ButtonForSearching" class="col-auto">
-                        <a class="btn btn-icon" aria-label="Button">
+                      <div id="ButtonForSearching" class="ButtonForSearching col-auto">
+                        <a class="ButtonForSearching btn btn-icon" aria-label="Button">
                           <!-- Download SVG icon from http://tabler-icons.io/i/search -->
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="ButtonForSearching icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
                         </a>
                       </div>
                     </div>
@@ -621,48 +632,28 @@
                     <div class="card" style="height: 28rem">
                       <div class="card-body card-body-scrollable card-body-scrollable-shadow">
                         <div id="showSousComptes" class="divide-y">
-
-                            
-                            <!-- <div class="row">
-                              <div class="col-auto">
-                                <span class="avatar" style="background-image: url(./assets/images/accounting.png)"></span>
-                              </div>
-                              <div class="col">
-                                <div class="text-truncate ">
-                                  <strong>1011 ||</strong> Capital souscrit, non appelé
-                                </div>
-                                <div class="descriptionClass">Description</div>
-                              </div>
-                              <div class="col-auto align-self-center">
-                                <div class="badge bg-primary"></div>
-                              </div>
-                            </div> -->
-                     
-
-                        
-                         
+                      
                         </div>
                         <hr>
-                        <div id="showComptes_inf" class="divide-y">
-                          
-                          <div class="row">
+                        <div class="row">
                             
-                            <div class="col">
-                            </div>
-                            <div class="wrapperComptes">
-                              <button id="GoBackButton" class=" button-80" role="button">Retour</button>
-                             </div>
-                            </div>
+                          <div class="col">
                           </div>
+                          <div class="wrapperComptes">
+                            <button id="GoBackButton" class=" button-80" role="button">Retour</button>
+                           </div>
+                          </div>
+                        </div>
 
-                            
+                        <!-- <div id="showComptes_inf" class="divide-y">
+                
                           <div class="row">
                             <div class="col-auto">
                               <span class="avatar" style="background-image: url(./assets/images/accounting.png)"></span>
                             </div>
                             <div class="col">
                               <div class="text-truncate ">
-                                <strong>1011 ||</strong> Capital souscrit, non appelé
+                                <strong>1011 ||</strong> Essai model
                               </div>
                               <div class="">Description</div>
                             </div>
@@ -671,15 +662,73 @@
                             </div>
                           </div>
                    
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                   </div>
                   <!-- END OF ACCOUNT FINDING RESULTS -->
 
                 </div>
-
               </div>
+              
+
+
+
+
+
+
+
+              <div class="col-lg-6">
+                <div id="" class="row row-cards">
+                  <!-- <div class="mb-3">
+                      <label class="form-label">Numero de comptes ou intitulé 2</label>
+                      <div class="row g-2">
+                        <div class="col">
+                          <input id="SearchingDetail" type="text" class="form-control" placeholder="Search for…">
+                        </div>
+                        <div id="ButtonForSearching" class="col-auto">
+                          <a class="btn btn-icon" aria-label="Button">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
+                          </a>
+                        </div>
+                      </div>
+                  </div> -->
+                        <hr>
+                        <div class="row">
+                            
+                          <div class="col">
+                          </div>
+                          <div class="wrapperComptes">
+                            <button id="GoBackButton" class=" button-80" role="button">Retour</button>
+                           </div>
+                          </div>
+                        </div>
+                                   
+                  <div id="" class="col-12">
+                    <div class="card" style="height: 28rem">
+                      <div class="card-body card-body-scrollable card-body-scrollable-shadow">
+                        <div id="showComptes_inf" class="divide-y">
+                      
+                        </div>
+                        
+
+                        
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+
+
+
+
+
+
+
+
+
 
               <div class="col-12">
                 <div class="card card-md">
@@ -851,7 +900,9 @@
 
 
 
-    
+
+
+    <!----------------------------- Start PAYEMENT BOX  --------------------------------------->
     <div class="modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
     <!-- <div class="modal modal-blur fade show" style="display: block;" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true"> -->
 
@@ -952,6 +1003,17 @@
         </div>
       </div>
     </div>
+    <!----------------------------- End PAYEMENT BOX  --------------------------------------->
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -187,7 +187,7 @@ class Comptes {
     }
   }
 
-static async AllElementByNameOrNbr(detail) {
+static async AllElementByNameOrNbr0(detail) {
   const db = new Database();
   const query = [
       { table: 'comptes', sql: `SELECT *, 'comptes' AS table_name FROM comptes WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;` }, 
@@ -204,11 +204,60 @@ static async AllElementByNameOrNbr(detail) {
           return acc;
       }, {});
       
-      return allResults; // renvoie les résultats dans un objet
+      return allResults; 
   } catch (error) {
       throw new Error(error.message);
   }
-}
+  }
+
+
+  static async AllElementByNameOrNbr13(detail) {
+    const db = new Database();
+    const query = [
+        { table: 'comptes', sql: `SELECT *, 'comptes' AS table_name FROM comptes WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;` }, 
+        { table: 'sous_comptes', sql: `SELECT *, 'sous_comptes' AS table_name FROM sous_comptes WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;` }, 
+        { table: 'comptes_inf', sql: `SELECT *, 'comptes_inf' AS table_name FROM comptes_inf WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;` }
+    ];
+  
+    try {
+        const resultPromises = query.map(({ table, sql }) => db.query(sql)); 
+        const results = await Promise.all(resultPromises); 
+        
+        const allResults = results.flat(); // Combine all results into a single array
+  
+        return { element: allResults }; // Return the object with a single 'element' array
+    } catch (error) {
+        throw new Error(error.message);
+    }
+  }
+  
+  static async AllElementByNameOrNbr(detail, id) {
+    const db = new Database();
+    const query = [
+        { table: 'comptes', sql: `SELECT *, 'comptes' AS table_name FROM comptes WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;` }, 
+        { table: 'sous_comptes', sql: `SELECT *, 'sous_comptes' AS table_name FROM sous_comptes WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;` }, 
+        { table: 'comptes_inf', sql: `SELECT *, 'comptes_inf' AS table_name FROM comptes_inf WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;` }
+    ];
+
+    const queryOf = [
+      {table: 'comptes', sql: ``},
+      {table: 'sous_comptes', sql: ``},
+      {table: 'comptes_inf', sql: ``}
+    ]
+  
+    try {
+        const resultPromises = query.map(({ table, sql }) => db.query(sql)); 
+        const results = await Promise.all(resultPromises); 
+        
+        const allResults = results.flat(); // Combine all results into a single array
+  
+        return allResults ; // Return the object with a single 'element' array
+    } catch (error) {
+        throw new Error(error.message);
+    }
+  }
+  
+
 
 
   

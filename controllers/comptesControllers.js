@@ -72,7 +72,7 @@ const getAllComptesById = async (req,res) => {
   }
 
   const getElementByNameOrByNbr = async (req, res) => {
-      const {detail} = req.body;
+      const {detail, id} = req.body;
       console.log(detail);
     try {
       const element = await Comptes.AllElementByNameOrNbr(detail);

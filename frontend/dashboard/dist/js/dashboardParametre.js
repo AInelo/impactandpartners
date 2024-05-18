@@ -1,3 +1,115 @@
+// ------------------To Displays all classe by typeclasse-------------- //
+const getClassesAndDisplayByTypesClasse = async (id, classesDomm) => {
+  const classesDOM = document.getElementById(`${classesDomm}`);
+
+  try {
+    const {
+      data: { classes },
+    } = await axios.get(`/api/v1/comptes/allclassesbyid/${id}`);
+    if (!classes || classes.length < 1) {
+      return;
+    } 
+    const allClasses = classes
+      .map((classe) => {
+        const { nbr, name, id } = classe;
+        return `<div class="col-6">
+            <div  style="cursor: pointer!important;" class="row g-3 align-items-center" >
+              <a class="col-auto">
+                <span class="avatar" style="background-image: url(./assets/images/accounting_classes.png)">
+                  <span class="badge bg-green"></span></span>
+              </a>
+              <div class="col text-truncate">
+                <a  class="text-reset d-block text-truncate">${name}</a>
+                <div class="wrapperComptes">
+                  <div class="text-muted text-truncate mt-n1 classes-name">${nbr}</div> 
+                  <button id="${id}" class="classes_comptes button-80" role="button">Voir comptes</button>
+                </div>
+                <div id="${id}" name="classes_comptes" class="descriptionClass">Description</div>
+              </div>
+            </div>
+          </div>`;
+      })
+      .join("");
+    classesDOM.innerHTML = allClasses;
+  } catch (error) {
+    console.error("l'erreur", error);
+    classesDOM.innerHTML =
+      '<h5 class="empty-list">There was an error, please try later....</h5>';
+  }
+};
+
+
+//---------------------------To Display all Classes of One TypesClasse---------------------------------//
+const btnNonLucratif = document.getElementById("btnNonLucratif");
+const btnLucratif = document.getElementById("btnLucratif");
+const lucratifElement = document.getElementById("lucratif");
+const nonLucratifElement = document.getElementById("nonLucratif");
+const classLucratif = document.getElementById("classLucratif");
+const classeNonLucratif = document.getElementById("classNonLucratif");
+const classDomLucratif = document.getElementById("classesDomLucratif");
+const classDomNonLucratif = document.getElementById("classesDomNonLucratif");
+
+let choiceBtn = [btnLucratif, btnNonLucratif];
+let choiceElement = [lucratifElement, nonLucratifElement];
+let choiceClasse = [classLucratif, classeNonLucratif];
+let choiceClassesDom = ["classesDomLucratif", "classesDomNonLucratif"];
+let index = [1, 2];
+
+for (let i = 0; i < index.length; i++) {
+  getClassesAndDisplayByTypesClasse(index[i], choiceClassesDom[i]);
+  
+}
+
+for (let i = 0; i < choiceBtn.length; i++) {
+  choiceBtn[i].addEventListener("click", () => {
+    console.log(choiceClassesDom[i]);
+    // Ajoutez la classe "visible" à l'élément correspondant
+    choiceElement[i].classList.add("visible");
+    choiceClasse[i].classList.add("visible");
+
+    // Supprimez la classe "visible" de l'autre élément
+    for (let j = 0; j < choiceElement.length; j++) {
+      if (j !== i) {
+        choiceElement[j].classList.remove("visible");
+        choiceClasse[j].classList.remove("visible");
+      }
+    }
+  });
+}
+
+// ------------Verify if one Typeclasse is clicked -------------- //
+function VerifyIfaTypeClasseIsClicked() {
+  const elements = document.querySelectorAll('.TypeClasseBadge');
+    
+    // // Parcourt les éléments pour vérifier s'ils ont la classe 'visible'
+    // for (let element of elements) {
+    //     if (element.classList.contains('visible')) {
+    //         return true; 
+    //     }
+    // }
+    
+    // return false;
+
+    // Parcourt les éléments pour vérifier s'ils ont la classe 'visible'
+    for (let element of elements) {
+      if (element.classList.contains('visible')) {
+          if (element.id === 'nonLucratif') {
+              return 2; // Renvoie 2 si l'élément a l'id 'nonLucratif'
+          } else if (element.id === 'lucratif') {
+              return 1; // Renvoie 1 si l'élément a l'id 'Lucratif'
+          }
+      }
+  }
+  
+  return 0;
+  
+}
+
+
+
+
+
+
 // ------------------   Logout API Call   -----------------------------------//
 // const logoutButton = document.querySelector(".logoutButton");
 //   // document.addEventListener("DOMContentLoaded", function () {
@@ -93,19 +205,20 @@ const getDescription = async (id, table) => {
 
 const getAllComptes_infById = async (id) => {
   const ComptesInfDOM = document.getElementById('showComptes_inf');
+  console.log(id);
 
   try {
     const {
-      data : {CompesInf}
-    } = await axios.get(`api/v1/comptes/allcomptesinfbyid/${id}`)
-    if (CompesInf.length < 1) {
+      data : {comptes_inf},
+      } = await axios.get(`/api/v1/comptes/allcomptesinfbyid/${id}`)
+
+    if (comptes_inf.length < 1) {
       ComptesInfDOM.innerHTML = '<h3 class="empty-list">il n\'y a pas de sous_comptes sélectionné un autre comptes, merci !</h3>';
-    
     }
 
-    const allSousComptes = CompesInf
-      .map((sous_compte) => {
-        const { id, name, nbr } = sous_compte;
+    const allComptesInf = comptes_inf
+      .map((CompteInf) => {
+        const { id, name, nbr } = CompteInf;
 
         return ` 
           <div class="row">
@@ -119,33 +232,27 @@ const getAllComptes_infById = async (id) => {
                 <strong>${nbr} ||</strong> ${name}
               </div>
               <div class="wrapperComptes">
-                <div id="${id}" name="sous_comptes" class="descriptionClass">Description</div>
-                <button id="${id}" class="sous_comptes button-80" role="button">Voir plus</button>
+                <div id="${id}" name="comptes_inf" class="descriptionClass">Description</div>
               </div>
               
             </div>
 
-            
           </div>`;
       })
       .join("");
 
-    // const firstClassComptesName = comptes[0].class_comptes_name;
-
-    ComptesInfDOM.innerHTML = allSousComptes;
-    // nameOfAllComptesDOM.innerText = firstClassComptesName ;
-
+      if (allComptesInf == null) {
+        ComptesInfDOM.innerHTML = '<h3 class="empty-list">il n\'y a pas de sous_comptes sélectionné un autre comptes, merci !</h3>';
+      }
+      ComptesInfDOM.innerHTML = allComptesInf;
 
   } catch (error) {
-    
+    console.error("l'erreur", error);
+    ComptesInfDOM.innerHTML =
+      '<h3 class="empty-list">There was an error, please try later....</h3>';
   }
 
 }
-
-
-
-
-
 
 
 
@@ -224,7 +331,7 @@ const getComptesAndDisplayByClasse = async (id) => {
     const {
       data: { comptes },
     } = await axios.get(`/api/v1/comptes/allcomptesbyid/${id}`);
-    if (comptes.length < 1) {
+    if ( !comptes || comptes.length < 1) {
       return;
     }
     const allComptes = comptes
@@ -265,65 +372,79 @@ const getComptesAndDisplayByClasse = async (id) => {
   }
 };
 
-const getClassesAndDisplayByTypesClasse = async (id, classesDomm) => {
-  const classesDOM = document.getElementById(`${classesDomm}`);
-
-  try {
-    const {
-      data: { classes },
-    } = await axios.get(`/api/v1/comptes/allclassesbyid/${id}`);
-    if (classes.length < 1) {
-      return;
-    } 
-    const allClasses = classes
-      .map((classe) => {
-        const { nbr, name, id } = classe;
-        return `<div class="col-6">
-            <div  style="cursor: pointer!important;" class="row g-3 align-items-center" >
-              <a class="col-auto">
-                <span class="avatar" style="background-image: url(./assets/images/accounting_classes.png)">
-                  <span class="badge bg-green"></span></span>
-              </a>
-              <div class="col text-truncate">
-                <a  class="text-reset d-block text-truncate">${name}</a>
-                <div class="wrapperComptes">
-                  <div class="text-muted text-truncate mt-n1 classes-name">${nbr}</div> 
-                  <button id="${id}" class="classes_comptes button-80" role="button">Voir comptes</button>
-                </div>
-                <div id="${id}" name="classes_comptes" class="descriptionClass">Description</div>
-              </div>
-            </div>
-          </div>`;
-      })
-      .join("");
-    classesDOM.innerHTML = allClasses;
-  } catch (error) {
-    console.error("l'erreur", error);
-    classesDOM.innerHTML =
-      '<h5 class="empty-list">There was an error, please try later....</h5>';
-  }
-};
 
 // ------------------   Get And Display all comptes of Searching input -----------------------------------//
 
-const getElementBySearching = async () => {
-  const SearchingElement = document.getElementById().value;
-  const SearchingTriggerButton = document.getElementById();
-  const SearchingResultDOM = document.getElementById();
-
+const getElementBySearching = async (detaill) => {
+  const SearchingResultDOM = document.getElementById('showSousComptes');
+  console.log("Element searched is (in function) : " + detaill);
   try {
     const requestBody = {
-      "detail": SearchingElement
+      "detail": detaill
+    };
+    const { data: { element } } = await axios.post('/api/v1/comptes/elementsearch', requestBody);
+
+    if (!element || element.length < 1) {
+      SearchingResultDOM.innerHTML = '<h5 class="empty-list">No elements found.</h5>';
+      return;
+    }
+
+    const allElement = element
+      .map((ele) => {
+        const { id, classes_comptes_id, name, nbr, table_name, description } = ele;
+          // if(table_name == "")
+
+        return `<div class="col-6">
+            <div style="cursor: pointer!important;" class="row g-3 align-items-center">
+              <a class="col-auto">
+                <span class="avatar" style="background-image: url(./assets/images/accounting_classes.png)">
+                  <span class="badge bg-green"></span></span>
+              </a>
+              <div class="col text-truncate">
+                <a class="text-reset d-block text-truncate">${name}</a>
+                <div class="wrapperComptes">
+                  <div class="text-muted text-truncate mt-n1 classes-name">${nbr}</div> 
+                  <button id="btn-${id}" class="classes_comptes button-80" role="button">Voir comptes</button>
+                </div>
+                <div id="desc-${id}" name="classes_comptes" class="descriptionClass" style="display: none;"></div>
+              </div>
+            </div>
+          </div>`;
+      })
+      .join("");
+
+    SearchingResultDOM.innerHTML = allElement;
+
+   
+  } catch (error) {
+    SearchingResultDOM.innerHTML = '<h5 class="empty-list">There was an error, please try later....</h5>';
+    console.error(error)
+  }
+};
+
+
+
+
+
+const getElementBySearching00 = async (detaill, id) => {
+  // const SearchingTriggerButton = document.getElementById();
+  const SearchingResultDOM = document.getElementById('showSousComptes');
+  console.log("Element searched is (in the API function) : " + detaill)
+  try {
+    const requestBody = {
+      "detail": detaill,
+      "id": id
     };
     const  {
-      data : {ComptesFind}
+      data : {element},
     } = await axios.post('/api/v1/comptes/elementsearch', requestBody);
-    if (ComptesFind.length < 1) {
+    if (element.length < 1) {
       
     }
-    const allComptesFind = ComptesFind
-      .map((compte_inf) => {
-        const { nbr, name, id } = compte_inf;
+   
+    const allElement = element
+      .map((ele) => {
+        const { id, classes_comptes_id , name,nbr, table_name } = ele;
         return `<div class="col-6">
             <div  style="cursor: pointer!important;" class="row g-3 align-items-center" >
               <a class="col-auto">
@@ -342,57 +463,17 @@ const getElementBySearching = async () => {
           </div>`;
       })
       .join("");
-    classesDOM.innerHTML = allComptesFind;
+      SearchingResultDOM.innerHTML = allElement;
 
   } catch (error) {
-    
+    SearchingResultDOM.innerHTML =  '<h5 class="empty-list">There was an error, please try later....</h5>';
+    console.log(error)
   }
 }
 
 
 
-
-//---------------------------To Display all Classes of One TypesClasse---------------------------------
-
-const btnNonLucratif = document.getElementById("btnNonLucratif");
-const btnLucratif = document.getElementById("btnLucratif");
-const lucratifElement = document.getElementById("lucratif");
-const nonLucratifElement = document.getElementById("nonLucratif");
-const classLucratif = document.getElementById("classLucratif");
-const classeNonLucratif = document.getElementById("classNonLucratif");
-const classDomLucratif = document.getElementById("classesDomLucratif");
-const classDomNonLucratif = document.getElementById("classesDomNonLucratif");
-
-let choiceBtn = [btnLucratif, btnNonLucratif];
-let choiceElement = [lucratifElement, nonLucratifElement];
-let choiceClasse = [classLucratif, classeNonLucratif];
-let choiceClassesDom = ["classesDomLucratif", "classesDomNonLucratif"];
-let index = [1, 2];
-
-for (let i = 0; i < index.length; i++) {
-  getClassesAndDisplayByTypesClasse(index[i], choiceClassesDom[i]);
-}
-
-for (let i = 0; i < choiceBtn.length; i++) {
-  choiceBtn[i].addEventListener("click", () => {
-    console.log(choiceClassesDom[i]);
-    // Ajoutez la classe "visible" à l'élément correspondant
-    choiceElement[i].classList.add("visible");
-    choiceClasse[i].classList.add("visible");
-
-    // Supprimez la classe "visible" de l'autre élément
-    for (let j = 0; j < choiceElement.length; j++) {
-      if (j !== i) {
-        choiceElement[j].classList.remove("visible");
-        choiceClasse[j].classList.remove("visible");
-      }
-    }
-  });
-}
-
-// const a = 1;
-
-
+//---------------------------To Display all Comptes by ID---------------------------------
 document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("click", async (e) => {
     if (e.target.classList.contains("classes_comptes")) {
@@ -404,6 +485,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+
+//---------------------------To Display all Sous_comptes by id---------------------------------
 
 document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("click", async (e) => {
@@ -418,6 +502,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+
+
+//---------------------------Display Comptes by ID---------------------------------//
+
 document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("click", async (e) => {
     if (e.target.classList.contains("sous_comptes")) {
@@ -429,6 +517,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   })
 })
+
+
+
+//---------------------------Trigger to get Description---------------------------------//
 
 document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("click", async (e) => {
@@ -444,3 +536,40 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+
+//------------------Trigger to get an element Seached--------------------------//
+document.addEventListener('DOMContentLoaded', () => {
+
+  document.addEventListener('click', (e) => {
+    e.preventDefault();
+    if(e.target.classList.contains('CloseModaleBtn')) {
+      const ModalElement = document.getElementById('offcanvasTop');
+        ModalElement.classList.remove('show')
+    }
+  } )
+} )
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('click', async (e) => {
+    if(e.target.classList.contains("ButtonForSearching")) {
+      e.preventDefault();
+      const detailContent = document.getElementById('SearchingDetail').value;
+      console.log("element searched is :" + detailContent)
+      const result = VerifyIfaTypeClasseIsClicked();
+      if (result==0) {
+        const ModalElement = document.getElementById('offcanvasTop');
+        ModalElement.classList.add('show')
+      } else {
+        console.log("The TypeClasse Selected is id = " + result);
+      await getElementBySearching(detailContent, result);
+      // Réinitialiser la valeur de l'input
+      document.getElementById('SearchingDetail').value = '';      
+      const boxSousComptesShowing = document.getElementById("BoxSousComptesShowing");
+      boxSousComptesShowing.scrollIntoView({ behavior: "smooth" });
+      }
+      
+    }
+  })
+})
+

@@ -7414,3 +7414,37 @@ droits similaires
 --806
 
 --807
+
+
+
+
+
+----------------------------- REQUEST TO GET ALL ELEMENT BY THE : TYPECLASSE------------------------------------------
+SELECT * FROM classes_comptes WHERE typesclasse_id = 1;
+
+
+SELECT comptes.*
+FROM comptes
+JOIN classes_comptes ON comptes.classes_comptes_id = classes_comptes.id
+JOIN typesclasse ON classes_comptes.typesclasse_id = typesclasse.id
+WHERE typesclasse.id = 1;
+
+
+SELECT sous_comptes.*
+FROM sous_comptes
+JOIN comptes ON sous_comptes.comptes_id = comptes.id
+JOIN classes_comptes ON comptes.classes_comptes_id = classes_comptes.id
+JOIN typesclasse ON classes_comptes.typesclasse_id = typesclasse.id
+WHERE typesclasse.id = 1;
+
+
+SELECT comptes_inf.*
+FROM comptes_inf
+JOIN sous_comptes ON comptes_inf.sous_comptes_id = sous_comptes.id
+JOIN comptes ON sous_comptes.comptes_id = comptes.id
+JOIN classes_comptes ON comptes.classes_comptes_id = classes_comptes.id
+JOIN typesclasse ON classes_comptes.typesclasse_id = typesclasse.id
+WHERE typesclasse.id = 1;
+
+
+SELECT *, 'comptes_inf' AS table_name FROM comptes_inf WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;` }

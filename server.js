@@ -250,7 +250,7 @@ function checkNotAuthenticated(req, res, next) {
 
 const port = process.env.PORT;
 const port2 = 3001
-const ipAddress = "192.168.1.106";
+const ipAddress = "192.168.1.247";
 
 
 
@@ -261,7 +261,7 @@ const start = async () => {
     const result = await db.query(query);
     console.log("la base marche!");
     console.log(result);
-    app.listen(port2, () => {
+    app.listen(port2,  () => {
       console.log(`The server is running on: http://localhost:${port2} `)
     })
   
