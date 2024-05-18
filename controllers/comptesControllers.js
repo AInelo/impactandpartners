@@ -73,9 +73,9 @@ const getAllComptesById = async (req,res) => {
 
   const getElementByNameOrByNbr = async (req, res) => {
       const {detail, id} = req.body;
-      console.log(detail);
+      console.log("Element searched is :"+ detail + " The id of TypeClasse is : " + id);
     try {
-      const element = await Comptes.AllElementByNameOrNbr(detail);
+      const element = await Comptes.AllElementByNameOrNbr(detail, id);
       res.status(200).json({element})
     } catch (error) {
       res.status(500).json({ error: "Erreur lors de la récupération des sous_comptes" });

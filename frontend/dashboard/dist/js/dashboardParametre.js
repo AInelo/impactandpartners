@@ -1,7 +1,6 @@
 // ------------------To Displays all classe by typeclasse-------------- //
 const getClassesAndDisplayByTypesClasse = async (id, classesDomm) => {
   const classesDOM = document.getElementById(`${classesDomm}`);
-
   try {
     const {
       data: { classes },
@@ -213,7 +212,7 @@ const getAllComptes_infById = async (id) => {
       } = await axios.get(`/api/v1/comptes/allcomptesinfbyid/${id}`)
 
     if (comptes_inf.length < 1) {
-      ComptesInfDOM.innerHTML = '<h3 class="empty-list">il n\'y a pas de sous_comptes sélectionné un autre comptes, merci !</h3>';
+      ComptesInfDOM.innerHTML = '<h3 class="empty-list">il n\'y a pas de sous_comptes, sélectionné un autre comptes, merci !</h3>';
     }
 
     const allComptesInf = comptes_inf
@@ -263,11 +262,6 @@ const getSousComptesAndDisplayByComptes = async (id) => {
   const nameOfAllComptesDOM = document.getElementById("nameOfAllComptesDOM");
   const loaderDOMComptes = document.querySelector(".loaderComptes");
   console.log(id);
-
-  // if (loaderDOMComptes.classList.contains('hidden')) {
-  //   loaderDOMComptes.classList.remove('hidden')
-  // }
-  // loaderDOMComptes.style.display = 'block'; // Pour afficher l'élément
 
   try {
     const {
@@ -322,10 +316,6 @@ const getComptesAndDisplayByClasse = async (id) => {
   const loaderDOMComptes = document.querySelector(".loaderComptes");
   console.log(id);
 
-  // if (loaderDOMComptes.classList.contains('hidden')) {
-  //   loaderDOMComptes.classList.remove('hidden')
-  // }
-  // loaderDOMComptes.style.display = 'block'; // Pour afficher l'élément
 
   try {
     const {

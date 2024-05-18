@@ -44,42 +44,57 @@ app.use(flash());
 // routes
 app.use('/api/v1/comptes', comptes);
 
+
+
 app.get("/", (req, res) => {
     // res.render("index.html");
     res.sendFile(path.join(initial_path, 'index.html'));
-  });
+});
   
-  app.get("/register", checkAuthenticated, (req, res) => {
+app.get("/register", checkAuthenticated, (req, res) => {
     res.sendFile(path.join(initial_path, 'sign-up.html'));
-  });
+});
   
-  app.get("/login", checkAuthenticated, (req, res) => {
+app.get("/login", checkAuthenticated, (req, res) => {
     // flash sets a messages variable. passport sets the error message
     if (req.session.flash && req.session.flash.error) {
         console.log(req.session.flash.error);
     }
-    // res.render("sign-in-cover.html");
-    res.sendFile(path.join(initial_path, 'sign-in-cover.html'));
+    // res.render("sign-in.html");
+    res.sendFile(path.join(initial_path, 'sign-in.html'));
 
-  });
+});
 
 
-  // Middleware pour bloquer l'accès à /sign-in-cover.html
-app.get("/sign-in-cover.html", (req, res) => {
+  // Middleware pour bloquer l'accès à /sign-in.html
+app.get("/sign-in.html", (req, res) => {
   // Renvoyer une page d'erreur personnalisée
   res.sendFile(path.join(initial_path, "error-404.html"));
 });
 
+app.get("/plancomptable/:name", checkNotAuthenticated, (req, res) => {
+  console.log(req.isAuthenticated());
+  firstNameLowarecase = req.params.name.toLowerCase();
+
+  res.sendFile(path.join(initial_path, 'dashboard.html'))
+});
+
+app.get("/etatfinanciers/:name", checkNotAuthenticated, (req, res) => {
+  console.log(req.isAuthenticated());
+  firstNameLowarecase = req.params.name.toLowerCase();
+
+  res.sendFile(path.join(initial_path, 'etatfinancier.html'))
+});
 
 
-  app.get("/dashboard/:name", checkNotAuthenticated, (req, res) => {
+
+app.get("/dashboard/:name", checkNotAuthenticated, (req, res) => {
     console.log(req.isAuthenticated());
 
     const firstNameLowercase = req.params.name.toLowerCase();
 
-    // const FistrNameLowercase = req.user.firstname.toLowerCase();
-    res.sendFile(path.join(initial_path, 'dashboard.html'))
-  }); 
+    res.sendFile(path.join(initial_path, 'profile.html'))
+}); 
   
   // app.get("/dashboard", checkNotAuthenticated, (req, res) => {
   //   console.log(req.isAuthenticated());
@@ -90,7 +105,7 @@ app.get("/sign-in-cover.html", (req, res) => {
   // });
   
 
-  app.get("/logout", (req, res) => {
+app.get("/logout", (req, res) => {
     req.logout((err) => {
       if (err) {
         console.error("Erreur lors de la déconnexion :", err);
@@ -102,13 +117,13 @@ app.get("/sign-in-cover.html", (req, res) => {
     });
     //res.render("index", { message: "You have logged out successfully" });
     // res.sendFile(path.join(initial_path, 'index.html'));
-    res.sendFile(path.join(initial_path, 'sign-in-cover.html'));
-  });
-  
+    res.sendFile(path.join(initial_path, 'sign-in.html'));
+});
   
 
 
-  app.post("/register", async (req, res) => {
+
+app.post("/register", async (req, res) => {
     const { firstname, lastname, email, password, password2 } = req.body;
     const db = new Database();
     let errors = [];
@@ -172,17 +187,11 @@ app.get("/sign-in-cover.html", (req, res) => {
 
 
     }
-  });
+});
 
-  // app.post("/login",
-  //   passport.authenticate("local", {
-  //     successRedirect: "/dashboard/:name",
-  //     failureRedirect: "/login",
-  //     failureFlash: true
-  //   })
-  // );
+  
 
-  app.post("/login",
+app.post("/login",
   passport.authenticate("local", {
     failureRedirect: "/login",
     failureFlash: true
@@ -194,9 +203,9 @@ app.get("/sign-in-cover.html", (req, res) => {
 );
 
 
-  function checkUserConnection(req) {
+function checkUserConnection(req) {
     return req.isAuthenticated(); // Utilisez isAuthenticated() pour vérifier si l'utilisateur est authentifié
-  }
+}
   
     // Endpoint pour vérifier si l'utilisateur est connecté et récupérer ses informations
 app.post("/user", (req, res) => {
@@ -250,7 +259,7 @@ function checkNotAuthenticated(req, res, next) {
 
 const port = process.env.PORT;
 const port2 = 3001
-const ipAddress = "192.168.1.247";
+const ipAddress = "0.0.0.0";
 
 
 

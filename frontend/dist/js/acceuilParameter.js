@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.log("Bienvenue: " + UserLastname + UserFirstName);
         
             ButtonDashboard = `<div class="gradient-button">
-                                    <a id="" href="/dashboard/${firstNameLowercase}">
+                                    <a id="" href="/dashboard/${firstNameLowercase}" data-path="/dashboard/${firstNameLowercase}" >
                                     <i class="fa fa-user"></i> Mon Compte
                                     </a>
                                 </div>`;

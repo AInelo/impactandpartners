@@ -240,14 +240,33 @@ static async AllElementByNameOrNbr0(detail) {
     ];
 
     const queryOf = [
-      {table: 'comptes', sql: ``},
-      {table: 'sous_comptes', sql: ``},
-      {table: 'comptes_inf', sql: ``}
+      {table: 'comptes', sql: `SELECT comptes.*, 'comptes' AS table_name
+      FROM comptes
+      JOIN classes_comptes ON comptes.classes_comptes_id = classes_comptes.id
+      JOIN typesclasse ON classes_comptes.typesclasse_id = typesclasse.id
+      WHERE typesclasse.id = ${id}
+        AND (comptes.name LIKE '%${detail}%' OR comptes.nbr LIKE '%${detail}%');`},
+      {table: 'sous_comptes', sql: `SELECT sous_comptes.*, 'sous_comptes' AS table_name
+      FROM sous_comptes
+      JOIN comptes ON sous_comptes.comptes_id = comptes.id
+      JOIN classes_comptes ON comptes.classes_comptes_id = classes_comptes.id
+      JOIN typesclasse ON classes_comptes.typesclasse_id = typesclasse.id
+      WHERE typesclasse.id = ${id}
+        AND (sous_comptes.name LIKE '%${detail}%' OR sous_comptes.nbr LIKE '%${detail}%');`},
+      {table: 'comptes_inf', sql: `SELECT comptes_inf.*, 'comptes_inf' AS table_name
+      FROM comptes_inf
+      JOIN sous_comptes ON comptes_inf.sous_comptes_id = sous_comptes.id
+      JOIN comptes ON sous_comptes.comptes_id = comptes.id
+      JOIN classes_comptes ON comptes.classes_comptes_id = classes_comptes.id
+      JOIN typesclasse ON classes_comptes.typesclasse_id = typesclasse.id
+      WHERE typesclasse.id = ${id}
+        AND (comptes_inf.name LIKE '%${detail}%' OR comptes_inf.nbr LIKE '%${detail}%');`}
     ]
   
     try {
-        const resultPromises = query.map(({ table, sql }) => db.query(sql)); 
+        const resultPromises = queryOf.map(({ table, sql }) => db.query(sql)); 
         const results = await Promise.all(resultPromises); 
+        // console.log(results)
         
         const allResults = results.flat(); // Combine all results into a single array
   
