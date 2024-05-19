@@ -76,7 +76,7 @@ app.get("/plancomptable/:name", checkNotAuthenticated, (req, res) => {
   console.log(req.isAuthenticated());
   firstNameLowarecase = req.params.name.toLowerCase();
 
-  res.sendFile(path.join(initial_path, 'dashboard.html'))
+  res.sendFile(path.join(initial_path, 'plancomptable.html'))
 });
 
 app.get("/etatfinanciers/:name", checkNotAuthenticated, (req, res) => {
@@ -93,15 +93,15 @@ app.get("/dashboard/:name", checkNotAuthenticated, (req, res) => {
 
     const firstNameLowercase = req.params.name.toLowerCase();
 
-    res.sendFile(path.join(initial_path, 'profile.html'))
+    res.sendFile(path.join(initial_path, 'dashboard.html'))
 }); 
   
   // app.get("/dashboard", checkNotAuthenticated, (req, res) => {
   //   console.log(req.isAuthenticated());
     
-  //   res.sendFile(path.join(initial_path, 'dashboard.html'));
+  //   res.sendFile(path.join(initial_path, 'plancomptable.html'));
 
-  //   // res.render("dashboard.html", { user: req.user.name });
+  //   // res.render("plancomptable.html", { user: req.user.name });
   // });
   
 
@@ -209,16 +209,30 @@ function checkUserConnection(req) {
   
     // Endpoint pour vérifier si l'utilisateur est connecté et récupérer ses informations
 app.post("/user", (req, res) => {
-  if (checkUserConnection(req)) {
-    // Créez un nouvel objet utilisateur en excluant le mot de passe
-    const userWithoutPassword = { ...req.user };
-    delete userWithoutPassword.password;
+  try {
+    // Vérifiez si l'utilisateur est connecté
+    if (checkUserConnection(req)) {
+      // Créez un nouvel objet utilisateur en excluant le mot de passe
+      const userWithoutPassword = { ...req.user };
+      delete userWithoutPassword.password;
 
-    // Renvoyez les informations de l'utilisateur sans le mot de passe
-    res.status(200).json({ user: userWithoutPassword });
-  } else {
-    // Si l'utilisateur n'est pas connecté, renvoyez un message d'erreur
-    res.status(401).json({ message: "Utilisateur non connecté" });
+      // Renvoyez les informations de l'utilisateur sans le mot de passe
+      res.status(200).json({ user: userWithoutPassword });
+    } else {
+      // Si l'utilisateur n'est pas connecté, renvoyez un message d'erreur
+      res.status(401).json({ message: "Utilisateur non connecté" });
+    }
+  } catch (error) {
+    console.error('Une erreur est survenue:', error);
+
+    // Vérifiez le type d'erreur et envoyez une réponse appropriée
+    // if (error instanceof ValidationError) {
+    //   res.status(400).json({ message: "Erreur de validation des données", error: error.message });
+    // } else if (error instanceof DatabaseError) {
+    //   res.status(500).json({ message: "Erreur de connexion à la base de données", error: error.message });
+    // } else {
+    //   res.status(500).json({ message: "Erreur interne du serveur", error: error.message });
+    // }
   }
 });
 

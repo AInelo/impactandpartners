@@ -41,14 +41,21 @@
         <form class="card card-md" novalidate>
           <div class="card-body">
             <h2 class="card-title text-center mb-4">Créer un nouveau compte</h2>
-            <div class="mb-3">
-              <label class="form-label">Nom</label>
-              <input id="lastname" type="text" class="form-control" placeholder="Entrer nom">
+            
+            <div class="input-icon mb-3">
+              <span class="input-icon-addon">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg>
+              </span>
+              <input id="lastname" type="text" value="" class="form-control" placeholder="Nom">
             </div>
-            <div class="mb-3">
-              <label class="form-label">Prénoms</label>
-              <input id="firstname" type="text" class="form-control" placeholder="Entrer nom">
+            
+            <div class="input-icon mb-3">
+              <span class="input-icon-addon">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg>
+              </span>
+              <input id="firstname" type="text" value="" class="form-control" placeholder="Prénoms">
             </div>
+
             <div class="mb-3">
               <label class="form-label">Address mail</label>
               <input id="email" type="email" class="form-control" placeholder="Entrer email">
@@ -77,6 +84,19 @@
               </div>
             </div>
             <div class="mb-3">
+              <label class="form-label">Votre status</label>
+              <div class="btn-group w-100"role="group">
+                <input type="radio" class="btn-check" name="btn-radio-basic" id="btn-radio-basic-1" value="etudiant" autocomplete="off" >
+                <label for="btn-radio-basic-1" type="button" class="btn">Etudiant</label>
+                <input type="radio" class="btn-check" name="btn-radio-basic" id="btn-radio-basic-2" value="entreprise" autocomplete="off">
+                <label for="btn-radio-basic-2" type="button" class="btn">Entreprise</label>
+                <input type="radio" class="btn-check" name="btn-radio-basic" id="btn-radio-basic-3" value="particulier" autocomplete="off">
+                <label for="btn-radio-basic-3" type="button" class="btn">Particulier</label>
+              </div>
+            </div>
+            <button id="get-value-button">Obtenir la valeur sélectionnée</button>
+            <p id="selected-value">Valeur sélectionnée : <span></span></p>
+            <div class="mb-3">
               <label class="form-check">
                 <input type="checkbox" class="form-check-input"/>
                 <span class="form-check-label">Je suis d'accord avec les<a href="./terms-of-service.html" tabindex="-1"> termes et politiques</a>.</span>
@@ -99,6 +119,51 @@
     <!-- Axios Libs -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
+
+    <!-- <script>
+      document.getElementById('get-value-button').addEventListener('click', function() {
+        // Sélectionner tous les boutons radio avec le nom "btn-radio-basic"
+        const radios = document.querySelectorAll('input[name="btn-radio-basic"]');
+        
+        // Itérer à travers chaque bouton radio pour vérifier lequel est sélectionné
+        let selectedValue;
+        for (const radio of radios) {
+          if (radio.checked) {
+            selectedValue = radio.value;
+            break;
+          }
+        }
+        
+        // Afficher la valeur sélectionnée dans le paragraphe
+        document.getElementById('selected-value').querySelector('span').textContent = selectedValue;
+      });
+      </script> -->
+      
+      <script>
+        function WhichBoxChecked () {
+         // e.preventDefault()
+
+          const radios = document.querySelectorAll('input[name="btn-radio-basic"]');
+          
+          // Itérer à travers chaque bouton radio pour vérifier lequel est sélectionné
+          let selectedValue = null;
+          for (const radio of radios) {
+            if (radio.checked) {
+              selectedValue = radio.value;
+              break;
+            }
+          }
+          
+          // Vérifier si une valeur a été sélectionnée
+          if (selectedValue) {
+            document.getElementById('selected-value').querySelector('span').textContent = selectedValue;
+          } else {
+            document.getElementById('selected-value').querySelector('span').textContent = 'Aucune sélection';
+          }
+        }
+
+        document.getElementById('get-value-button').addEventListener('click',WhichBoxChecked);
+      </script>
 
       <script>
       const registerButton = document.getElementById("registerButton");

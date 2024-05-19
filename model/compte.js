@@ -1,4 +1,3 @@
-// const pool = require("../db/connexionDb");
 const Database = require('../db/connexionDb');
 
 
@@ -140,97 +139,7 @@ class Comptes {
   }
 
  
-    static async AllElementByNameOrNbr1(detail) {
-      const db = new Database();
-      const query = [
-        `SELECT * FROM comptes WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;`, 
-        `SELECT * FROM sous_comptes WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;`, 
-        `SELECT * FROM comptes_inf WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;`
-      ];
-      
-      try {
-          const resultPromises = query.map(sql => db.query(sql)); 
-          const results = await Promise.all(resultPromises); 
-          
-          const allResults = {
-              nameMatches: results[0],
-              nbrMatches: results[1],
-              descriptionMatches: results[2]
-          };
-          
-          return allResults; // renvoie les résultats dans un objet
-      } catch (error) {
-          throw new Error(error.message);
-      }
-  }
-
-  static async AllElementByNameOrNbr2(detail) {
-    const db = new Database();
-    const query = [
-        { table: 'comptes', sql: `SELECT * FROM comptes WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;` }, 
-        { table: 'sous_comptes', sql: `SELECT * FROM sous_comptes WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;` }, 
-        { table: 'comptes_inf', sql: `SELECT * FROM comptes_inf WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;` }
-    ];
     
-    try {
-        const resultPromises = query.map(({ table, sql }) => db.query(sql).then(rows => ({ table, rows }))); 
-        const results = await Promise.all(resultPromises); 
-        
-        const allResults = results.reduce((acc, { table, rows }) => {
-            acc[table] = rows;
-            return acc;
-        }, {});
-        
-        return allResults; // renvoie les résultats dans un objet
-    } catch (error) {
-        throw new Error(error.message);
-    }
-  }
-
-static async AllElementByNameOrNbr0(detail) {
-  const db = new Database();
-  const query = [
-      { table: 'comptes', sql: `SELECT *, 'comptes' AS table_name FROM comptes WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;` }, 
-      { table: 'sous_comptes', sql: `SELECT *, 'sous_comptes' AS table_name FROM sous_comptes WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;` }, 
-      { table: 'comptes_inf', sql: `SELECT *, 'comptes_inf' AS table_name FROM comptes_inf WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;` }
-  ];
-  
-  try {
-      const resultPromises = query.map(({ table, sql }) => db.query(sql)); 
-      const results = await Promise.all(resultPromises); 
-      
-      const allResults = results.reduce((acc, rows, index) => {
-          acc[query[index].table] = rows.map(row => ({ ...row, table_name: query[index].table }));
-          return acc;
-      }, {});
-      
-      return allResults; 
-  } catch (error) {
-      throw new Error(error.message);
-  }
-  }
-
-
-  static async AllElementByNameOrNbr13(detail) {
-    const db = new Database();
-    const query = [
-        { table: 'comptes', sql: `SELECT *, 'comptes' AS table_name FROM comptes WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;` }, 
-        { table: 'sous_comptes', sql: `SELECT *, 'sous_comptes' AS table_name FROM sous_comptes WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;` }, 
-        { table: 'comptes_inf', sql: `SELECT *, 'comptes_inf' AS table_name FROM comptes_inf WHERE name LIKE '%${detail}%' OR nbr LIKE '%${detail}%' ORDER BY id ASC;` }
-    ];
-  
-    try {
-        const resultPromises = query.map(({ table, sql }) => db.query(sql)); 
-        const results = await Promise.all(resultPromises); 
-        
-        const allResults = results.flat(); // Combine all results into a single array
-  
-        return { element: allResults }; // Return the object with a single 'element' array
-    } catch (error) {
-        throw new Error(error.message);
-    }
-  }
-  
   static async AllElementByNameOrNbr(detail, id) {
     const db = new Database();
     const query = [

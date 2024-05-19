@@ -1,5 +1,3 @@
-// const Task = require('../models/Task')
-// const pool = require("../db/connexionDb");
 const asyncWrapper = require('../middleware/async')
 // const { createCustomError } = require('../errors/custom-error')
 const Comptes = require("../model/compte");
@@ -14,14 +12,6 @@ const getAllClassesComptesById = async (req, res) => {
     res.status(500).json({ error: "Erreur lors de la récupération des classes_comptes" });
   }
 }
-
-// const getAllClassesComptesById = async (req, res) => {
-//   const classes_id = req.params.id;
-//   const compte = new Comptes();
-//   const classes = await compte.allClassComptesById(classes_id);
-
-//   res.status(200).json({ classes })
-// }
 
 const getAllComptesById = async (req,res) => {
   const comptes_id = req.params.id;

@@ -70,19 +70,34 @@ CREATE TABLE comptes_inf (
 );
 
 CREATE TABLE users (
-  users_id INT GENERATED ALWAYS AS IDENTITY,
-  firstname VARCHAR,
-  lastname VARCHAR,
-  email VARCHAR,
-  password VARCHAR,
-  numero_tel VARCHAR,
-  date_inscription TIMESTAMP,
-  date_paiement TIMESTAMP,
-  status_paiement BOOLEAN,
-  duree_abonnement INT,
-  temps_abonnement_restant INT,
-  PRIMARY KEY (users_id)
+  users_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  firstname VARCHAR(255),
+  lastname VARCHAR(255),
+  email VARCHAR(255),
+  password VARCHAR(255),
+  numero_tel VARCHAR(20) DEFAULT NULL,
+  date_inscription DATE,
+  date_paiement DATE,
+  status_paiement BOOLEAN DEFAULT false,
+  duree_abonnement INT DEFAULT 365,
+  user_category VARCHAR(50),
+  type_user VARCHAR(50)
 );
+
+INSERT INTO users (firstname, lastname, email, password, numero_tel, date_inscription, date_paiement, status_paiement, duree_abonnement, user_category, type_user)
+VALUES 
+('Lionel', 'TOTON', 'totonlionel@gmail.com', '$2b$10$avfInxCAPcG0wn0ZLs49l.ZL1d5/3H0Zfo241z3RS02Q2Sklc0DrS', '96769716', '2024-01-02', '2024-02-02', true, 365, 'entreprise', 'simple');
+
+
+1	"Lionel"	"TOTON"	"totonlionel@gmail.com"	"$2b$10$avfInxCAPcG0wn0ZLs49l.ZL1d5/3H0Zfo241z3RS02Q2Sklc0DrS"						
+2	"Lionel"	"TOTON"	"totonlion2002@gmail.com"	"$2b$10$p5sfX9ALsPrsLbBCBK1hpuxl3h3i.vkPyLdQqujlB1M4wszYTxqha"						
+3	"Jean"	"DOSSOU"	"impact@gmail.com"	"$2b$10$aPtxa3vryjnm6WgIl978W.OnSflcKjHGVQOtGX0fwbkUn5z.4HBa."						
+4	"John"	"Doe"	"john@example.com"	"$2b$10$aPtxa3vryjnm6WgIl978W.OnSflcKjHGVQOtGX0fwbkUn5z.4HBa."	"96769716"	"2024-04-24 10:00:00"	"2024-04-24 10:00:00"	true	30	6
+5	"Jane"	"Doe"	"jane@example.com"	"$2b$10$aPtxa3vryjnm6WgIl978W.OnSflcKjHGVQOtGX0fwbkUn5z.4HBa.asse"	"96769716"	"2024-04-22 08:00:00"	"2024-04-22 08:00:00"	true	30	24
+6	"Bob"	"Johnson"	"bob@example.com"	"$2b$10$aPtxa3vryjnm6WgIl978W.OnSflcKjHGVQOtGX0fwbkUn5z.4HBa."	"96769716"	"2024-04-21 15:00:00"	"2024-04-21 15:00:00"	false	30	0
+7	"Person"	"Add"	"person@gmail.com"	"$2b$10$gM5mEBhXc6PoKwzYtzrPBugqYidhjJYa8g6HoWEjdbRt00nNNbMKi"						
+
+
 
 
 ALTER TABLE users
