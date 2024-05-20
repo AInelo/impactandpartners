@@ -1,25 +1,5 @@
 //-------- Verify if the User has an abonnement ----------------//
 
-// async function VerifyAbonnement() {
-  
-//   let statusFinale = false;
-//   try {
-//     const response = await axios.post('/user');
-//     const user = response.data.user;
-//     if (user) {
-//       const {
-//         status_paiement: UserStatuAbonnement
-//       } = user;
-//       statusFinale = UserStatuAbonnement === true;
-//     } else {
-//       console.log('No User Connected');
-//     }
-//   } catch (error) {
-//     console.error('Error verifying abonnement:', error);
-//   }
-//   return statusFinale;
-// }
-
 async function VerifyAbonnement() {
   try {
     const response = await axios.post('/user');
@@ -388,24 +368,26 @@ async function SetLinkToApp() {
 
 
 
-  async function main() {
-    try {
-      console.log("Starting main function...");
-      const isAbonnementValid = await VerifyAbonnement();
-      console.log("isAbonnementValid = :", isAbonnementValid);
-      if (isAbonnementValid === true) {
-        console.log('Yes he has an abonnement!');
-      await  InCaseAbonnementActive(); // Ajout de await pour s'assurer que la fonction est terminée avant de continuer
-      await SetLinkToApp();
-      } else {
-        console.log("No he doesn't have an abonnement!");
-      await InCaseAbonnementNotActive();
-      }
-      console.log('Abonne has an abonnement: ' + isAbonnementValid); // true ou false
-    } catch (error) {
-      console.error('An error occurred:', error);
+async function main() {
+  try {
+    console.log("Starting main function...");
+    const isAbonnementValid = await VerifyAbonnement();
+    console.log("isAbonnementValid = :", isAbonnementValid);
+    if (isAbonnementValid === true) {
+      console.log('Yes he has an abonnement!');
+    await  InCaseAbonnementActive(); // Ajout de await pour s'assurer que la fonction est terminée avant de continuer
+    await SetLinkToApp();
+    } else {
+      console.log("No he doesn't have an abonnement!");
+    await InCaseAbonnementNotActive();
+    // await InCaseAbonnementActive();
+    await SetLinkToApp();
     }
+    console.log('Abonne has an abonnement: ' + isAbonnementValid); // true ou false
+  } catch (error) {
+    console.error('An error occurred:', error);
   }
+}
 
 main();
 

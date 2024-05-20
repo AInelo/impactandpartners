@@ -1,3 +1,50 @@
+//-------- Verify if the User has an abonnement ----------------//
+
+async function VerifyAbonnement() {
+  try {
+    const response = await axios.post('/user');
+    const user = response.data.user;
+
+    if (user) {
+      const { status_paiement: UserStatuAbonnement } = user;
+      return UserStatuAbonnement === true;
+    } else {
+      console.log('No User Connected');
+      return false;
+    }
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    return false;
+  }
+}
+
+// const ShowPayementBox = () => {
+//   const PaymentBox = document.getElementById('modal-report');
+//   PaymentBox.classList.add('show')
+// }
+
+// async function main() {
+//   try {
+//     console.log("Starting main function...");
+//     const isAbonnementValid = await VerifyAbonnement();
+//     console.log("isAbonnementValid = :", isAbonnementValid);
+//     if (isAbonnementValid === true) {
+//       console.log('Yes he has an abonnement!');
+   
+//     } else {
+//       console.log("No he doesn't have an abonnement!");
+//       ShowPayementBox(); 
+//     }
+//     console.log('Abonne has an abonnement: ' + isAbonnementValid); 
+//   } catch (error) {
+//     console.error('An error occurred:', error);
+//   }
+// }
+
+// main();
+
+
+
 // ------------------To Displays all classe by typeclasse-------------- //
 const getClassesAndDisplayByTypesClasse = async (id, classesDomm) => {
   const classesDOM = document.getElementById(`${classesDomm}`);
