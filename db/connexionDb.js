@@ -1,15 +1,9 @@
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 
-const { Pool } = require("pg");
+import pkg from 'pg';
+const { Pool } = pkg;
 
-
-const pool = new Pool({
-  user: 'postgres', // Utilisateur de la base de données
-  host: '127.0.0.1', // Hôte de la base de données
-  database: 'comptaplan', // Nom de la base de données
-  password: 'lionel', // Mot de passe de la base de données
-  port: 5432, // Port de la base de données
-});
 
 
 const isProduction = process.env.NODE_ENV === "production";
@@ -48,4 +42,4 @@ class Database {
   }
 }
 
-module.exports = Database;
+export default Database;

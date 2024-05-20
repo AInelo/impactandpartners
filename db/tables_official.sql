@@ -80,6 +80,7 @@ CREATE TABLE users (
   date_paiement DATE,
   status_paiement BOOLEAN DEFAULT false,
   duree_abonnement INT DEFAULT 365,
+  amont_to_pay  INT,
   user_category VARCHAR(50),
   type_user VARCHAR(50)
 );
@@ -87,6 +88,12 @@ CREATE TABLE users (
 INSERT INTO users (firstname, lastname, email, password, numero_tel, date_inscription, date_paiement, status_paiement, duree_abonnement, user_category, type_user)
 VALUES 
 ('Lionel', 'TOTON', 'totonlionel@gmail.com', '$2b$10$avfInxCAPcG0wn0ZLs49l.ZL1d5/3H0Zfo241z3RS02Q2Sklc0DrS', '96769716', '2024-01-02', '2024-02-02', true, 365, 'entreprise', 'simple');
+
+
+
+INSERT INTO users (firstname, lastname, email, password, numero_tel, date_inscription, date_paiement, status_paiement, duree_abonnement, user_category, type_user)
+VALUES 
+('Lionel2', 'TOTON', 'totonlion2002@gmail.com', '$2b$10$avfInxCAPcG0wn0ZLs49l.ZL1d5/3H0Zfo241z3RS02Q2Sklc0DrS', '96769716', '2024-01-02', null, false, 0, null, 'simple');
 
 
 1	"Lionel"	"TOTON"	"totonlionel@gmail.com"	"$2b$10$avfInxCAPcG0wn0ZLs49l.ZL1d5/3H0Zfo241z3RS02Q2Sklc0DrS"						

@@ -1,6 +1,7 @@
-const asyncWrapper = require('../middleware/async')
+import asyncWrapper from '../middleware/async.js';
 // const { createCustomError } = require('../errors/custom-error')
-const Comptes = require("../model/compte");
+// import { allClassComptesById, allComptesById, allSousComptesById, allComptes_inf, description as _description, AllElementByNameOrNbr } from "../model/compte.js";
+import Comptes from '../model/compte.js';
 
 const getAllClassesComptesById = async (req, res) => {
   const id = req.params.id; // Assurez-vous que le paramètre est correctement récupéré
@@ -72,7 +73,7 @@ const getAllComptesById = async (req,res) => {
     }
   }
 
-module.exports = {
+export default {
   getAllClassesComptesById,
   getAllComptesById,
   getAllSousComptesById,

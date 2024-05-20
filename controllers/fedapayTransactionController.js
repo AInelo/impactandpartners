@@ -1,8 +1,8 @@
 // const express = require("express");
-const bodyParser = require('body-parser');
-const { FedaPay, Transaction } = require("fedapay");
-const asyncWrapper = require('../middleware/async');
-const { response } = require('express');
+import bodyParser from 'body-parser';
+import { FedaPay, Transaction } from "fedapay";
+import asyncWrapper from '../middleware/async.js';
+import { response } from 'express';
 
 FedaPay.setApiKey("sk_live_CaZH-pW0S9lqhGldYsaQf0C2");
 
@@ -108,7 +108,7 @@ const callback = async (req, res) => {
   res.redirect('/');
 };
 
-module.exports = {
+export default {
   createFedaTransaction,
   generateTokenTransaction,
   callback,

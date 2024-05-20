@@ -1,4 +1,4 @@
-const Database = require('../db/connexionDb');
+import Database from '../db/connexionDb.js';
 
 
 
@@ -192,4 +192,4 @@ class Comptes {
 }
 
 
-module.exports = Comptes;
+export default Comptes;

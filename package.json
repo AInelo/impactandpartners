@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Ici je mettrai tout le code pour la page d'impact and Partners",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server"
