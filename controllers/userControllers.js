@@ -1,5 +1,11 @@
 import User from "../model/user.js";
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+
+// Définir __dirname en utilisant import.meta.url
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 class UserController {
 
@@ -27,6 +33,103 @@ class UserController {
         res.status(result.status).json(result);
       }
     }
+
+    static checkUserConnection = (req) => {
+        return req.isAuthenticated();
+      };
+
+    static login(req, res) {
+        if (req.session.flash && req.session.flash.error) {
+            console.log(req.session.flash.error);
+        }
+        res.sendFile(path.join(__dirname, '..', 'frontend', 'sign-in.html'));
+    }
+    
+    static home(req, res) {
+        res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
+    }
+    
+    static register(req, res) {
+        res.sendFile(path.join(__dirname, '..', 'frontend', 'sign-up.html'));
+    }
+    
+    static errorPage(req, res) {
+        res.sendFile(path.join(__dirname, '..', 'frontend', 'error-404.html'));
+    }
+    
+    static planComptable(req, res) {
+        const firstNameLowercase = req.params.name.toLowerCase();
+        res.sendFile(path.join(__dirname, '..', 'frontend', 'plancomptable.html'));
+    }
+    
+    static etatFinanciers(req, res) {
+        const firstNameLowercase = req.params.name.toLowerCase();
+        res.sendFile(path.join(__dirname, '..', 'frontend', 'etatfinancier.html'));
+    }
+    
+    static dashboard(req, res) {
+        const firstNameLowercase = req.params.name.toLowerCase();
+        res.sendFile(path.join(__dirname, '..', 'frontend', 'dashboard.html'));
+    }
+    
+    static loginPost(req, res) {
+        const firstNameLowercase = req.user.firstname.toLowerCase();
+        res.redirect("/dashboard/" + firstNameLowercase);
+    }
+    
+
+
+
+
+    static logout(req, res) {
+        req.logout((err) => {
+            if (err) {
+            console.error("Erreur lors de la déconnexion :", err);
+            res.status(500).send("Erreur lors de la déconnexion");
+            } else {
+            res.redirect("/");
+            console.log("Déconnexion réussie");
+            }
+        });
+    }
+
+    static checkAuthenticated(req, res, next) {
+        if (req.isAuthenticated()) {
+          const firstNameLowercase = req.user.firstname.toLowerCase();
+          return res.redirect("/dashboard/" + firstNameLowercase);
+        }
+        next();
+      }
+      
+    static checkNotAuthenticated(req, res, next) {
+        if (req.isAuthenticated()) {
+            return next();
+        }
+        res.redirect("/login");
+    }
+    
+
+
+    
+      
+      static checkUser = (req, res) => {
+        try {
+          if (UserController.checkUserConnection(req)) {
+            const userWithoutPassword = { ...req.user };
+            delete userWithoutPassword.password;
+            res.status(200).json({ user: userWithoutPassword });
+          } else {
+            res.status(401).json({ message: "Utilisateur non connecté" });
+          }
+        } catch (error) {
+          console.error('Une erreur est survenue:', error);
+          res.status(500).json({ error: "Une erreur s'est produite" });
+        }
+      };
+    
+
+
+
 
 }
   

@@ -48,100 +48,100 @@ app.use(passport.session());
 app.use('/api/v1/comptes', comptes);
 app.use('/', users);
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(initial_path, 'index.html'));
-});
+// app.get("/", (req, res) => {
+//   res.sendFile(path.join(initial_path, 'index.html'));
+// });
 
-app.get("/register", checkAuthenticated, (req, res) => {
-  res.sendFile(path.join(initial_path, 'sign-up.html'));
-});
+// app.get("/register", checkAuthenticated, (req, res) => {
+//   res.sendFile(path.join(initial_path, 'sign-up.html'));
+// });
 
-app.get("/login", checkAuthenticated, (req, res) => {
-  if (req.session.flash && req.session.flash.error) {
-    console.log(req.session.flash.error);
-  }
-  res.sendFile(path.join(initial_path, 'sign-in.html'));
-});
+// app.get("/login", checkAuthenticated, (req, res) => {
+//   if (req.session.flash && req.session.flash.error) {
+//     console.log(req.session.flash.error);
+//   }
+//   res.sendFile(path.join(initial_path, 'sign-in.html'));
+// });
 
-app.get("/sign-in.html", (req, res) => {
-  res.sendFile(path.join(initial_path, "error-404.html"));
-});
+// app.get("/sign-in.html", (req, res) => {
+//   res.sendFile(path.join(initial_path, "error-404.html"));
+// });
 
-app.get("/plancomptable/:name", checkNotAuthenticated, (req, res) => {
-  console.log(req.isAuthenticated());
-  const firstNameLowercase = req.params.name.toLowerCase();
-  res.sendFile(path.join(initial_path, 'plancomptable.html'));
-});
+// app.get("/plancomptable/:name", checkNotAuthenticated, (req, res) => {
+//   console.log(req.isAuthenticated());
+//   const firstNameLowercase = req.params.name.toLowerCase();
+//   res.sendFile(path.join(initial_path, 'plancomptable.html'));
+// });
 
-app.get("/etatfinanciers/:name", checkNotAuthenticated, (req, res) => {
-  console.log(req.isAuthenticated());
-  const firstNameLowercase = req.params.name.toLowerCase();
-  res.sendFile(path.join(initial_path, 'etatfinancier.html'));
-});
+// app.get("/etatfinanciers/:name", checkNotAuthenticated, (req, res) => {
+//   console.log(req.isAuthenticated());
+//   const firstNameLowercase = req.params.name.toLowerCase();
+//   res.sendFile(path.join(initial_path, 'etatfinancier.html'));
+// });
 
-app.get("/dashboard/:name", checkNotAuthenticated, (req, res) => {
-  console.log(req.isAuthenticated());
-  const firstNameLowercase = req.params.name.toLowerCase();
-  res.sendFile(path.join(initial_path, 'dashboard.html'));
-});
+// app.get("/dashboard/:name", checkNotAuthenticated, (req, res) => {
+//   console.log(req.isAuthenticated());
+//   const firstNameLowercase = req.params.name.toLowerCase();
+//   res.sendFile(path.join(initial_path, 'dashboard.html'));
+// });
 
-app.get("/logout", (req, res) => {
-  req.logout((err) => {
-    if (err) {
-      console.error("Erreur lors de la déconnexion :", err);
-      res.status(500).send("Erreur lors de la déconnexion");
-    } else {
-      res.redirect("/");
-      console.log("Déconnexion réussie");
-    }
-  });
-  res.sendFile(path.join(initial_path, 'sign-in.html'));
-});
+// app.get("/logout", (req, res) => {
+//   req.logout((err) => {
+//     if (err) {
+//       console.error("Erreur lors de la déconnexion :", err);
+//       res.status(500).send("Erreur lors de la déconnexion");
+//     } else {
+//       res.redirect("/");
+//       console.log("Déconnexion réussie");
+//     }
+//   });
+//   res.sendFile(path.join(initial_path, 'sign-in.html'));
+// });
 
 
-app.post("/login",
-  passport.authenticate("local", {
-    failureRedirect: "/login",
-    failureFlash: true
-  }),
-  function(req, res) {
-    const firstNameLowercase = req.user.firstname.toLowerCase();
-    res.redirect("/dashboard/" + firstNameLowercase);
-  }
-);
+// app.post("/login",
+//   passport.authenticate("local", {
+//     failureRedirect: "/login",
+//     failureFlash: true
+//   }),
+//   function(req, res) {
+//     const firstNameLowercase = req.user.firstname.toLowerCase();
+//     res.redirect("/dashboard/" + firstNameLowercase);
+//   }
+// );
 
-function checkUserConnection(req) {
-  return req.isAuthenticated();
-}
+// function checkUserConnection(req) {
+//   return req.isAuthenticated();
+// }
 
-app.post("/user", (req, res) => {
-  try {
-    if (checkUserConnection(req)) {
-      const userWithoutPassword = { ...req.user };
-      delete userWithoutPassword.password;
-      res.status(200).json({ user: userWithoutPassword });
-    } else {
-      res.status(401).json({ message: "Utilisateur non connecté" });
-    }
-  } catch (error) {
-    console.error('Une erreur est survenue:', error);
-  }
-});
+// app.post("/user", (req, res) => {
+//   try {
+//     if (checkUserConnection(req)) {
+//       const userWithoutPassword = { ...req.user };
+//       delete userWithoutPassword.password;
+//       res.status(200).json({ user: userWithoutPassword });
+//     } else {
+//       res.status(401).json({ message: "Utilisateur non connecté" });
+//     }
+//   } catch (error) {
+//     console.error('Une erreur est survenue:', error);
+//   }
+// });
 
-function checkAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    const firstNameLowercase = req.user.firstname.toLowerCase();
-    return res.redirect("/dashboard/" + firstNameLowercase);
-  }
-  next();
-}
+// function checkAuthenticated(req, res, next) {
+//   if (req.isAuthenticated()) {
+//     const firstNameLowercase = req.user.firstname.toLowerCase();
+//     return res.redirect("/dashboard/" + firstNameLowercase);
+//   }
+//   next();
+// }
 
-function checkNotAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect("/login");
-}
+// function checkNotAuthenticated(req, res, next) {
+//   if (req.isAuthenticated()) {
+//     return next();
+//   }
+//   res.redirect("/login");
+// }
 
 const port = process.env.PORT || 3000;
 
