@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 dotenv.config();
-
 import pkg from 'pg';
 const { Pool } = pkg;
 
@@ -18,14 +17,19 @@ const poole = new Pool({
 });
 
 
-
+//lionel_impact:7bVziQY78RppLqwMqXjGo0kLvLnveqJi@dpg-cnss2amct0pc73ejha0g-a.oregon-postgres.render.com/laraveldatabase_6pc1
 class Database {
   constructor() {
     this.pool = new Pool({
-      user: 'postgres',
-      host: 'localhost',
-      database: 'postgres',
-      password: '1234',
+      // user: 'postgres',
+      // host: 'localhost',
+      // database: 'postgres',
+      // password: '1234',
+      // port: 5432
+      user: 'lionel_impact',
+      host: 'dpg-cnss2amct0pc73ejha0g-a.oregon-postgres.render.com',
+      database: 'laraveldatabase_6pc1',
+      password: '7bVziQY78RppLqwMqXjGo0kLvLnveqJi',
       port: 5432,
     });
   }
