@@ -1,12 +1,5 @@
 <!doctype html>
-<!--
-* Tabler - Premium and Open Source dashboard template with responsive and high quality UI.
-* @version 1.0.0-beta19
-* @link https://tabler.io
-* Copyright 2018-2023 The Tabler Authors
-* Copyright 2018-2023 codecalm.net Paweł Kuna
-* Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
--->
+
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
@@ -38,6 +31,7 @@
         <div class="text-center mb-4">
           <a href="." class="navbar-brand navbar-brand-autodark"><img src="./assets/images/logo.png" height="36" alt=""></a>
         </div>
+
         <form class="card card-md" novalidate>
           <div class="card-body">
             <h2 class="card-title text-center mb-4">Créer un nouveau compte</h2>
@@ -84,7 +78,6 @@
               </div>
             </div>
 
-
             <div class="row">
               <div class="col-lg-4">
                 <div class="mb-6">
@@ -117,7 +110,6 @@
                 </div>
               </div>
             </div>
-
 
             <div class="mb-3">
               <label class="form-label">Votre status</label>
@@ -154,26 +146,6 @@
     <script src="./dist/js/demo.min.js?1684106062" defer></script>
     <!-- Axios Libs -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-
-    <!-- <script>
-      document.getElementById('get-value-button').addEventListener('click', function() {
-        // Sélectionner tous les boutons radio avec le nom "btn-radio-basic"
-        const radios = document.querySelectorAll('input[name="btn-radio-basic"]');
-        
-        // Itérer à travers chaque bouton radio pour vérifier lequel est sélectionné
-        let selectedValue;
-        for (const radio of radios) {
-          if (radio.checked) {
-            selectedValue = radio.value;
-            break;
-          }
-        }
-        
-        // Afficher la valeur sélectionnée dans le paragraphe
-        document.getElementById('selected-value').querySelector('span').textContent = selectedValue;
-      });
-      </script> -->
       
       <script>
         function WhichBoxChecked () {
@@ -188,12 +160,6 @@
           }
           return selectedValue
         }
-
-        // const declenchButton = document.getElementById('get-value-button"')
-        // declenchButton.addEventListener('click', function() {
-        //   const selectValue = WhichBoxChecked();
-        //   console.log(selectValue);
-        // });
 
         function getCodeCountrySelectedValue(selectId) {
           const selectElement = document.getElementById(selectId);
@@ -272,7 +238,7 @@
                       firstname: UserFinalFormalise.firstname,
                       lastname: UserFinalFormalise.lastname,
                       email: UserFinalFormalise.email,
-                      password: password, // Assurez-vous que password et password2 sont définis dans le contexte
+                      password: password, 
                       password2: password2,
                       country_code: UserFinalFormalise.country_code,
                       numero_tel: UserFinalFormalise.numero_tel,
@@ -284,23 +250,20 @@
                       duree_abonnement: UserFinalFormalise.duree_abonnement
                     });
 
-                    // Si l'inscription est réussie, rediriger vers la page de connexion
                     console.log("Inscription réussie :", registerResponse);
                     window.location.href = "/login";
                   } catch (registerError) {
-                    // Gérer les erreurs lors de la création du compte
                     console.error("Erreur lors de la création du compte :", registerError);
                     alert("Erreur lors de la création du compte, veuillez réessayer.");
                   }
                 } catch (formaliseError) {
-                  // Gérer les erreurs lors de la formalisation des données
                   console.error("Erreur lors de la formalisation des données :", formaliseError);
                   alert("Erreur lors de la formalisation des données, veuillez réessayer.");
                 }
 
         } catch (error) {
           console.error("Erreur lors de la formalisation des données :", formaliseError);
-                  alert("Erreur lors de la formalisation des données, veuillez réessayer.");
+          alert("Erreur lors de la formalisation des données, veuillez réessayer.");
         }
 
       });
