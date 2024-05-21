@@ -18,30 +18,35 @@ async function VerifyAbonnement() {
   }
 }
 
-// const ShowPayementBox = () => {
-//   const PaymentBox = document.getElementById('modal-report');
-//   PaymentBox.classList.add('show')
-// }
+const ShowPayementBox = () => {
+  const PaymentBox = document.getElementById('modal-report');
+  if (PaymentBox) {
+    PaymentBox.style.display = 'block';
+    PaymentBox.classList.add('show');
+  } else {
+    console.log('Element with id "modal-report" not found.');
+  }
+}
 
-// async function main() {
-//   try {
-//     console.log("Starting main function...");
-//     const isAbonnementValid = await VerifyAbonnement();
-//     console.log("isAbonnementValid = :", isAbonnementValid);
-//     if (isAbonnementValid === true) {
-//       console.log('Yes he has an abonnement!');
+async function main() {
+  try {
+    console.log("Starting main function...");
+    const isAbonnementValid = await VerifyAbonnement();
+    console.log("isAbonnementValid = :", isAbonnementValid);
+    if (isAbonnementValid === true) {
+      console.log('Yes he has an abonnement!');
    
-//     } else {
-//       console.log("No he doesn't have an abonnement!");
-//       ShowPayementBox(); 
-//     }
-//     console.log('Abonne has an abonnement: ' + isAbonnementValid); 
-//   } catch (error) {
-//     console.error('An error occurred:', error);
-//   }
-// }
+    } else {
+      console.log("No he doesn't have an abonnement!");
+      ShowPayementBox(); 
+    }
+    console.log('Abonne has an abonnement: ' + isAbonnementValid); 
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+}
 
-// main();
+main();
 
 
 
@@ -602,5 +607,4 @@ document.addEventListener('DOMContentLoaded', () => {
       
     }
   })
-})
-
+});

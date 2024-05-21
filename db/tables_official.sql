@@ -75,12 +75,13 @@ CREATE TABLE users (
   lastname VARCHAR(255),
   email VARCHAR(255),
   password VARCHAR(255),
+  conuntry_code VARCHAR(50),
   numero_tel VARCHAR(20) DEFAULT NULL,
   date_inscription DATE,
   date_paiement DATE,
   status_paiement BOOLEAN DEFAULT false,
   duree_abonnement INT DEFAULT 365,
-  amont_to_pay  INT,
+  amount_to_pay  INT,
   user_category VARCHAR(50),
   type_user VARCHAR(50)
 );

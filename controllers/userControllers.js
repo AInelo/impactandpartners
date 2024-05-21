@@ -126,6 +126,39 @@ class UserController {
           res.status(500).json({ error: "Une erreur s'est produite" });
         }
       };
+
+     
+      static formaliseDataSignUp = async  (req, res) => {
+        
+        try {
+          const { 
+            firstname,
+            lastname, 
+            email, 
+            country_code, 
+            numero_tel, 
+            date_inscription, 
+            user_category, 
+            type_user } = req.body
+  
+          const finalObject = await User.ConformationSignUpInformation({ 
+            firstname,
+            lastname, 
+            email, 
+            country_code, 
+            numero_tel, 
+            date_inscription, 
+            user_category, 
+            type_user });
+
+            res.status(200).json(finalObject)
+
+        } catch (error) {
+          console.error('Une erreur est survenue:', error);
+          res.status(500).json({ error: "Une erreur s'est produite" });
+        }
+
+      }
     
 
 

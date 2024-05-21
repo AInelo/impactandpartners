@@ -29,5 +29,6 @@ router.post("/login", passport.authenticate("local", {
 
 router.post("/user", UserController.checkUser);
 
+router.post('/formalise', UserController.formaliseDataSignUp);
 
 export default router

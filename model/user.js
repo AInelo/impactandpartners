@@ -1,6 +1,8 @@
 // models/utilisateur.js
 import Database from '../db/connexionDb.js';
 import { hash } from 'bcrypt';
+import utf8 from 'utf8';
+import iconv from 'iconv-lite';
 
 
 class User {
@@ -91,8 +93,116 @@ class User {
     return result;
   }
 
-  static async ConformationSignUpInformation () {
 
+
+  static convertLatin1ToUTF8ooo(latin1String) {
+    // Convertir la chaîne Latin-1 en un tableau d'octets
+    const latin1Bytes = new Uint8Array([...latin1String].map(char => char.charCodeAt(0)));
+    
+    // Décoder les octets Latin-1 en une chaîne
+    const latin1Decoder = new TextDecoder('iso-8859-1');
+    const decodedString = latin1Decoder.decode(latin1Bytes);
+    
+    // Encoder la chaîne décodée en UTF-8
+    const utf8Encoder = new TextEncoder();
+    const utf8Bytes = utf8Encoder.encode(decodedString);
+    
+    // Convertir les octets UTF-8 en une chaîne
+    const utf8String = new TextDecoder('utf-8').decode(utf8Bytes);
+    
+    return utf8String;
+  }
+
+
+  static convertLatin1ToUTF8ooooooooooo(latin1String) {
+    // Échapper la chaîne Latin-1
+    const escapedString = escape(latin1String);
+    
+    // Décoder la chaîne échappée en UTF-8
+    const utf8String = decodeURIComponent(escapedString);
+    
+    return utf8String;
+  }
+
+  static convertLatin1ToUTF8o(latin1String) {
+    // Convertir la chaîne Latin-1 en un tableau d'octets
+    const latin1Bytes = new Uint8Array([...latin1String].map(char => char.charCodeAt(0)));
+  
+    // Décoder les octets Latin-1 en une chaîne
+    const latin1Decoder = new TextDecoder('iso-8859-1');
+    const decodedString = latin1Decoder.decode(latin1Bytes);
+  
+    return decodedString;
+  }
+
+
+  // static convertLatin1ToUTF8(latin1String) {
+  //   // Encodage de la chaîne Latin-1 en UTF-8
+  //   const utf8String = utf8.encode(latin1String);
+    
+  //   return utf8String;
+  // }
+
+  static convertLatin1ToUTF8(latin1String) {
+    // Décodez la chaîne Latin-1 en UTF-8
+    const utf8Buffer = iconv.encode(latin1String, 'latin1');
+    const utf8String = utf8Buffer.toString('utf-8');
+    
+    return utf8String;
+  }
+  
+
+
+// Code to define the logic of datas by category of users
+
+  static ConformationSignUpInformation ({ 
+     firstname,
+     lastname, 
+     email, 
+     country_code, 
+     numero_tel, 
+     date_inscription, 
+     user_category, 
+     type_user }) {
+
+
+    let UserObject = {
+      firstname : firstname,
+      lastname : lastname,
+      email: email,
+      country_code : country_code,
+      numero_tel : numero_tel,
+      date_inscription : date_inscription,
+      amount_to_pay : 0,
+      user_category: user_category, 
+      type_user : type_user,
+      duree_abonnement : 0
+    }
+
+    // UserObject.firstname = User.convertLatin1ToUTF8(firstname);
+    // UserObject.lastname = User.convertLatin1ToUTF8(lastname);
+    const startDate = new Date(date_inscription);
+
+    const formattedstartDate = `${startDate.getDate().toString().padStart(2, '0')}-${(startDate.getMonth() + 1).toString().padStart(2, '0')}-${startDate.getFullYear()}`;
+    
+    UserObject.date_inscription = formattedstartDate
+    
+    if(UserObject.user_category === 'entreprise') {
+      UserObject.amount_to_pay = 15000
+      UserObject.duree_abonnement = 365
+
+    } else if (UserObject.user_category === 'etudiant') {
+      UserObject.amount_to_pay = 1000
+      UserObject.duree_abonnement = 1095
+
+
+    } else if (UserObject.user_category === 'particulier') {
+      UserObject.amount_to_pay = 7000
+      UserObject.duree_abonnement = 365
+
+    }
+
+    return UserObject
   }
 
 }
