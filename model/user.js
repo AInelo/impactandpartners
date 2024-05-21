@@ -14,7 +14,7 @@ class User {
   }
 
 
-  static async SignUp({ firstname, lastname, email, password, password2 }) {
+  static async SignUp({ firstname, lastname, email, password, password2,  country_code, numero_tel, date_inscription, date_paiement, duree_abonnement, amount_to_pay, user_category, type_user  }) {
     const db = new Database();
     let errors = [];
 
@@ -37,17 +37,34 @@ class User {
 
       const query = "SELECT * FROM users WHERE email = $1";
 
+
+    //   {
+    //     "firstname": "Laiconel",
+    //     "lastname": "TOTON",
+    //     "email": "totonlionel@gmail.com",
+    //     "country_code": "229",
+    //     "numero_tel": "96769716",
+    //     "date_inscription": "02-02-2024",
+    //     "date_paiement": null,
+    //     "amount_to_pay": 1000,
+    //     "user_category": "etudiant",
+    //     "type_user": "simple",
+    //     "duree_abonnement": 1095
+    // }
+
+
       try {
         const results = await db.query(query, [email]);
 
         if (results.length > 0) {
           return { status: 409, error: 'L\'utilisateur avec cet email existe déjà.' };
         } else {
-          const insertQuery = `INSERT INTO users (firstname, lastname, email, password)
-                                VALUES ($1, $2, $3, $4)
+          const insertQuery = `
+          INSERT INTO users (firstname, lastname, email, password, country_code, numero_tel, date_inscription, date_paiement, duree_abonnement, amount_to_pay, user_category, type_user)
+                                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12 )
                                 RETURNING users_id, password`;
 
-          const insertResult = await db.query(insertQuery, [firstname, lastname, email, hashedPassword]);
+          const insertResult = await db.query(insertQuery, [firstname, lastname, email, hashedPassword, country_code, numero_tel, date_inscription, date_paiement, duree_abonnement, amount_to_pay, user_category, type_user ]);
 
           return { status: 201, data: insertResult[0] };
         }
@@ -151,6 +168,19 @@ class User {
     return utf8String;
   }
   
+  static removeAccents(str) {
+    // Remplacements spécifiques pour chaque accent
+    const accentMap = {
+      'é': 'e', 'è': 'e', 'ê': 'e', 'ë': 'e',
+      'à': 'a', 'â': 'a', 'ä': 'a',
+      'ï': 'i', 'î': 'i',
+      'ü': 'u', 'ù': 'u', 'û': 'u',
+      'ç': 'c'
+    };
+  
+    // Remplacer chaque caractère accentué par son équivalent non accentué
+    return str.split('').map(char => accentMap[char] || char).join('');
+  }
 
 
 // Code to define the logic of datas by category of users
@@ -163,7 +193,7 @@ class User {
      numero_tel, 
      date_inscription, 
      user_category, 
-     type_user }) {
+      }) {
 
 
     let UserObject = {
@@ -173,14 +203,15 @@ class User {
       country_code : country_code,
       numero_tel : numero_tel,
       date_inscription : date_inscription,
+      date_paiement: null,
       amount_to_pay : 0,
       user_category: user_category, 
-      type_user : type_user,
+      type_user : 'simple',
       duree_abonnement : 0
     }
 
-    // UserObject.firstname = User.convertLatin1ToUTF8(firstname);
-    // UserObject.lastname = User.convertLatin1ToUTF8(lastname);
+    UserObject.firstname = User.removeAccents(firstname);
+    UserObject.lastname = User.removeAccents(lastname);
     const startDate = new Date(date_inscription);
 
     const formattedstartDate = `${startDate.getDate().toString().padStart(2, '0')}-${(startDate.getMonth() + 1).toString().padStart(2, '0')}-${startDate.getFullYear()}`;

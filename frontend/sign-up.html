@@ -89,7 +89,7 @@
               <div class="col-lg-4">
                 <div class="mb-6">
                   <label class="form-label">Code</label>
-                  <select class="form-select">
+                  <select class="form-select" id="country-code-select">
                     <option value="229">Bénin (+229)</option>
                     <option value="226">Burkina Faso (+226)</option>
                     <option value="257">Burundi (+257)</option>
@@ -113,7 +113,7 @@
               <div class="col-lg-8">
                 <div class="mb-3">
                   <label class="form-label">telephone</label>
-                  <input type="text" class="form-control">
+                  <input id="numero_tel" type="text" class="form-control">
                 </div>
               </div>
             </div>
@@ -130,7 +130,7 @@
                 <label for="btn-radio-basic-3" type="button" class="btn">Particulier</label>
               </div>
             </div>
-            <button id="get-value-button">Obtenir la valeur sélectionnée</button>
+            <!-- <button id="get-value-button">Obtenir la valeur sélectionnée</button> -->
             <!-- <p id="selected-value">Valeur sélectionnée : <span></span></p>  -->
             <div class="mb-3">
               <label class="form-check">
@@ -177,11 +177,7 @@
       
       <script>
         function WhichBoxChecked () {
-         // e.preventDefault()
-
           const radios = document.querySelectorAll('input[name="btn-radio-basic"]');
-          
-          // Itérer à travers chaque bouton radio pour vérifier lequel est sélectionné
           let selectedValue = null;
           for (const radio of radios) {
             if (radio.checked) {
@@ -191,28 +187,53 @@
             }
           }
           return selectedValue
-          
         }
 
-        const declenchButton = document.getElementById('get-value-button"')
-        declenchButton.addEventListener('click', function() {
-          const selectValue = WhichBoxChecked();
-          console.log(selectValue);
-        });
-      //  const SelectValue = WhichBoxChecked();
-     
-      //  console.log(SelectValue);
+        // const declenchButton = document.getElementById('get-value-button"')
+        // declenchButton.addEventListener('click', function() {
+        //   const selectValue = WhichBoxChecked();
+        //   console.log(selectValue);
+        // });
 
+        function getCodeCountrySelectedValue(selectId) {
+          const selectElement = document.getElementById(selectId);
+          if (selectElement) {
+            return selectElement.value;
+          } else {
+            console.error(`Element with ID ${selectId} not found.`);
+            return null;
+          }
+        }
+        function getCurrentDateISO() {
+          const now = new Date();
+          return now.toISOString();
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+          const todayISO = getCurrentDateISO();
+          console.log(todayISO);  
+                
+        })
+       
 
 
       const registerButton = document.getElementById("registerButton");
           
 
-      registerButton.addEventListener("click", function (e) {
+      registerButton.addEventListener("click", async function (e) {
+
         e.preventDefault();
         const firstname = document.getElementById("firstname").value;
         const lastname = document.getElementById("lastname").value;
         const email = document.getElementById("email").value;
+        const country_code = getCodeCountrySelectedValue('country-code-select');
+        const numero_tel = document.getElementById('numero_tel').value;
+        const TodayDate = new Date()
+        const user_category = WhichBoxChecked();
+        const todayISODate = getCurrentDateISO();
+
+
+
         const password = document.getElementById("password").value;
         const password2 = document.getElementById("password2").value;
 
@@ -222,27 +243,66 @@
           alert("Veuillez saisir votre nom d'utilisateur et votre mot de passe.");
           return;
         }
+        //
+        InformalData = {
+                  
+            firstname :firstname ,
+            lastname: lastname, 
+            email: email, 
+            country_code: country_code, 
+            numero_tel: numero_tel, 
+            date_inscription: todayISODate, 
+            user_category: user_category, 
+            type_user: 'simple'
 
-        // Effectuer la requête Axios
-        axios.post("/register", {
-          firstname : firstname,
-          lastname : lastname,
-          email : email,
-          password : password,
-          password2 : password2
-        })
-        .then(function (response) {
-          // Gérer la réponse en cas de succès
-          console.log("Inscritption réussie :", response);
-          // Rediriger l'utilisateur vers le dashboard si nécessaire
-          window.location.href = "/login";
-        })
-        .catch(function (error) {
-          // Gérer l'erreur en cas d'échec de l'authentification
-          console.error("Error while account creation :", error);
-          // Afficher un message d'erreur à l'utilisateur si nécessaire
-          alert("Error while account creation, please try again");
-        });
+        }
+        try {
+          UserFinalFormaliseResponse = await axios.post("/formalise", InformalData)
+
+          UserFinalFormalise = UserFinalFormaliseResponse.data;
+
+          try {
+                  // Envoyer les données informelles pour formaliser la réponse
+                  const UserFinalFormaliseResponse = await axios.post("/formalise", InformalData);
+                  const UserFinalFormalise = UserFinalFormaliseResponse.data;
+
+                  try {
+                    // Envoyer les données d'inscription
+                    const registerResponse = await axios.post("/register", {
+                      firstname: UserFinalFormalise.firstname,
+                      lastname: UserFinalFormalise.lastname,
+                      email: UserFinalFormalise.email,
+                      password: password, // Assurez-vous que password et password2 sont définis dans le contexte
+                      password2: password2,
+                      country_code: UserFinalFormalise.country_code,
+                      numero_tel: UserFinalFormalise.numero_tel,
+                      date_inscription: UserFinalFormalise.date_inscription,
+                      date_paiement: UserFinalFormalise.date_paiement,
+                      amount_to_pay: UserFinalFormalise.amount_to_pay,
+                      user_category: UserFinalFormalise.user_category,
+                      type_user: UserFinalFormalise.type_user,
+                      duree_abonnement: UserFinalFormalise.duree_abonnement
+                    });
+
+                    // Si l'inscription est réussie, rediriger vers la page de connexion
+                    console.log("Inscription réussie :", registerResponse);
+                    window.location.href = "/login";
+                  } catch (registerError) {
+                    // Gérer les erreurs lors de la création du compte
+                    console.error("Erreur lors de la création du compte :", registerError);
+                    alert("Erreur lors de la création du compte, veuillez réessayer.");
+                  }
+                } catch (formaliseError) {
+                  // Gérer les erreurs lors de la formalisation des données
+                  console.error("Erreur lors de la formalisation des données :", formaliseError);
+                  alert("Erreur lors de la formalisation des données, veuillez réessayer.");
+                }
+
+        } catch (error) {
+          console.error("Erreur lors de la formalisation des données :", formaliseError);
+                  alert("Erreur lors de la formalisation des données, veuillez réessayer.");
+        }
+
       });
    
     </script>

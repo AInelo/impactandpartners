@@ -75,7 +75,7 @@ CREATE TABLE users (
   lastname VARCHAR(255),
   email VARCHAR(255),
   password VARCHAR(255),
-  conuntry_code VARCHAR(50),
+  country_code INT,
   numero_tel VARCHAR(20) DEFAULT NULL,
   date_inscription DATE,
   date_paiement DATE,
@@ -85,6 +85,14 @@ CREATE TABLE users (
   user_category VARCHAR(50),
   type_user VARCHAR(50)
 );
+
+
+INSERT INTO users (firstname, lastname, email, password, country_code, numero_tel, date_inscription, date_paiement, status_paiement, duree_abonnement, amount_to_pay, user_category, type_user)
+VALUES
+('Lionel', 'TOTON', 'totonlionel@gmail.com', '$2b$10$avfInxCAPcG0wn0ZLs49l.ZL1d5/3H0Zfo241z3RS02Q2Sklc0DrS', '229' ,'96769716', '2024-01-02', '2024-02-02', true, 365, 15000 ,'entreprise', 'simple');
+
+
+
 
 INSERT INTO users (firstname, lastname, email, password, numero_tel, date_inscription, date_paiement, status_paiement, duree_abonnement, user_category, type_user)
 VALUES 

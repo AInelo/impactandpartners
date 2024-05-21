@@ -22,9 +22,9 @@ class UserController {
     }
 
     static async signUp(req, res) {
-      const { firstname, lastname, email, password, password2 } = req.body;
+      const { firstname, lastname, email, password, password2, country_code, numero_tel, date_inscription, date_paiement, duree_abonnement, amount_to_pay, user_category, type_user } = req.body;
   
-      const result = await User.SignUp({ firstname, lastname, email, password, password2 });
+      const result = await User.SignUp({ firstname, lastname, email, password, password2, country_code, numero_tel, date_inscription, date_paiement, duree_abonnement, amount_to_pay, user_category, type_user });
   
       if (result.status === 201) {
         req.flash("success_msg", "You are now registered. Please log in");
