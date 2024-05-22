@@ -1,5 +1,138 @@
 //-------- Verify if the User has an abonnement ----------------//
 
+
+// {
+//   "user": {
+//       "users_id": 3,
+//       "firstname": "Lionel",
+//       "lastname": "TOTON",
+//       "email": "totonlion2002@gmail.com",
+//       "country_code": 229,
+//       "numero_tel": "96545055",
+//       "date_inscription": "2024-05-20T22:00:00.000Z",
+//       "date_paiement": null,
+//       "status_paiement": false,
+//       "duree_abonnement": 1095,
+//       "amount_to_pay": 1000,
+//       "user_category": "etudiant",
+//       "type_user": "simple"
+//   }
+// }
+
+
+async function DisplayPaymentBoxForUnPayment() {
+  const PaymentBoxDOM = document.getElementById('BigPaymentBox')
+  try {
+    const response = await axios.post('/user')
+    const user = response.data.user 
+    if (user) {
+      const {
+        status_paiement: UserStatuAbonnement,
+        amount_to_pay: UserAmounttopay,
+        numero_tel : UserNumero,
+        country_code : UserCountryCode,
+        user_category : UserCategory
+      } = user;
+
+      result = ` 
+      <div class="PaymentBox modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
+
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Abonnez-vous</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            
+            <label class="form-label">Pour continuer à utiliser ce plan comptable numérisé, vous devez souscrire à un offre d'abonnement</label>
+            <div class="form-selectgroup-boxes row mb-3">
+              <div class="col-lg-12">
+                <label class="form-selectgroup-item">
+                  <input type="radio" name="report-type" value="1" class="form-selectgroup-input" checked>
+                  <span class="form-selectgroup-label d-flex align-items-center p-3">
+                    <span class="me-3">
+                      <span class="form-selectgroup-check"></span>
+                    </span>
+                    <span class="form-selectgroup-label-content">
+                      <span class="form-selectgroup-title strong mb-1">Offre: ${UserCategory}</span>
+                      <span class="d-block text-muted">Vous vous êtes inscrit en tant au status "${UserCategory}", le montant à payer est :${UserAmounttopay} FCFA</span>
+                      <span class="d-block text-muted">Votre numero est : +${UserCountryCode} ${UserNumero}, confirmer le </span>
+
+                    </span>
+                  </span>
+                </label>
+              </div>
+              
+            </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <div class="mb-6">
+                  <label class="form-label">Code</label>
+                  <select class="form-select">
+                    <option value="229">Bénin (+229)</option>
+                    <option value="226">Burkina Faso (+226)</option>
+                    <option value="257">Burundi (+257)</option>
+                    <option value="238">Cap-Vert (+238)</option>
+                    <option value="225">Côte d'Ivoire (+225)</option>
+                    <option value="220">Gambie (+220)</option>
+                    <option value="233">Ghana (+233)</option>
+                    <option value="224">Guinée (+224)</option>
+                    <option value="245">Guinée-Bissau (+245)</option>
+                    <option value="231">Liberia (+231)</option>
+                    <option value="223">Mali (+223)</option>
+                    <option value="222">Mauritanie (+222)</option>
+                    <option value="234">Niger (+234)</option>
+                    <option value="234">Nigeria (+234)</option>
+                    <option value="221">Sénégal (+221)</option>
+                    <option value="232">Sierra Leone (+232)</option>
+                    <option value="228">Togo (+228)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label">Confirmer Votre Numéro de paiement</label>
+                  <input type="text" class="form-control">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div  class="modal-footer">
+            <btn id="PaymentTriggerBtn" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 12l5 5l10 -10"></path></svg>
+              Payer
+            </btn>
+          </div>
+        </div>
+      </div>
+    </div> `
+    PaymentBoxDOM.innerHTML = result
+
+
+    const btnPaymentClick = document.getElementById('PaymentTriggerBtn');
+      if (btnPaymentClick) {
+        btnPaymentClick.addEventListener('click', async (e) => {
+          e.preventDefault();
+          try {
+            await TriggerPaymentMethod();
+          } catch (error) {
+            console.error('Error triggering payment method:', error);
+          }
+        });
+      }
+
+
+    } else {
+      console.log('Non conected User right now !')
+    }
+
+  } catch (error) {
+    console.error('Error fetching user dara', error)
+  }
+}
+
 async function VerifyAbonnement() {
   try {
     const response = await axios.post('/user');
@@ -28,7 +161,7 @@ const ShowPayementBox = () => {
   }
 }
 
-async function main() {
+async function mainByAbonnementStatus() {
   try {
     console.log("Starting main function...");
     const isAbonnementValid = await VerifyAbonnement();
@@ -38,6 +171,7 @@ async function main() {
    
     } else {
       console.log("No he doesn't have an abonnement!");
+     await DisplayPaymentBoxForUnPayment()
       ShowPayementBox(); 
     }
     console.log('Abonne has an abonnement: ' + isAbonnementValid); 
@@ -46,7 +180,7 @@ async function main() {
   }
 }
 
-main();
+mainByAbonnementStatus();
 
 
 
@@ -459,51 +593,71 @@ const getElementBySearching = async (detaill, id) => {
 
 
 
-
-const getElementBySearching00 = async (detaill, id) => {
-  // const SearchingTriggerButton = document.getElementById();
-  const SearchingResultDOM = document.getElementById('showSousComptes');
-  console.log("Element searched is (in the API function) : " + detaill)
+const  TriggerPaymentMethod = async () => {
+console.log('Fonction Payment trigged')
   try {
-    const requestBody = {
-      "detail": detaill,
-      "id": id
-    };
-    const  {
-      data : {element},
-    } = await axios.post('/api/v1/comptes/elementsearch', requestBody);
-    if (element.length < 1) {
-      
-    }
-   
-    const allElement = element
-      .map((ele) => {
-        const { id, classes_comptes_id , name,nbr, table_name } = ele;
-        return `<div class="col-6">
-            <div  style="cursor: pointer!important;" class="row g-3 align-items-center" >
-              <a class="col-auto">
-                <span class="avatar" style="background-image: url(./assets/images/accounting_classes.png)">
-                  <span class="badge bg-green"></span></span>
-              </a>
-              <div class="col text-truncate">
-                <a  class="text-reset d-block text-truncate">${name}</a>
-                <div class="wrapperComptes">
-                  <div class="text-muted text-truncate mt-n1 classes-name">${nbr}</div> 
-                  <button id="${id}" class="classes_comptes button-80" role="button">Voir comptes</button>
-                </div>
-                <div id="${id}" name="classes_comptes" class="descriptionClass">Description</div>
-              </div>
-            </div>
-          </div>`;
-      })
-      .join("");
-      SearchingResultDOM.innerHTML = allElement;
+    const response = await axios.post('/user')
+    const user = response.data.user 
+    if (user) {
+      const {
+        firstname: UserFirstName,
+        lastname: UserLastname,
+        email: UserEmail,
+        status_paiement: UserStatuAbonnement,
+        amount_to_pay: UserAmounttopay,
+        numero_tel : UserNumero,
+        country_code : UserCountryCode,
+        user_category : UserCategory
+      } = user;
 
+      try {
+        const responseCountry = await axios.get(`/api/v2/payment/getCountry/${UserCountryCode}`)
+        const country = responseCountry.data.country; 
+        const serverUrl_ = await axios.get('/api/v2/payment/getserveururl')
+        const URL = serverUrl_.data.serverUrl
+
+        try {
+        
+          UserPaimentObject = {
+              firstname: UserFirstName,
+              lastname: UserLastname,
+              number: UserNumero,
+              email: UserEmail,
+              amounttopaid: UserAmounttopay,
+              country: country,
+              url : URL
+          } 
+          transactionResponse = await axios.post('/api/v2/payment/createtransaction', UserPaimentObject);
+          const transactionId = transactionResponse.data.id;
+           
+          try {
+            const tokenResponse = await axios.post('/api/v2/payment/generate-token', {transactionId})
+
+            window.location.href = tokenResponse.data.token;
+          } catch (error) {
+            console.error(error)
+          }
+  
+        } catch (error) {
+          console.error(error)
+        }
+
+      } catch (error) {
+        console.error(error)
+      }
+
+    } else {
+      console.log('No User connected rigth now...')
+    }
+  
   } catch (error) {
-    SearchingResultDOM.innerHTML =  '<h5 class="empty-list">There was an error, please try later....</h5>';
-    console.log(error)
+    console.error('The error is about : ' + error)
   }
+
 }
+
+
+
 
 
 
@@ -574,7 +728,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //------------------Trigger to get an element Seached--------------------------//
 document.addEventListener('DOMContentLoaded', () => {
-
   document.addEventListener('click', (e) => {
     e.preventDefault();
     if(e.target.classList.contains('CloseModaleBtn')) {

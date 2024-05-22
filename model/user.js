@@ -153,12 +153,6 @@ class User {
   }
 
 
-  // static convertLatin1ToUTF8(latin1String) {
-  //   // Encodage de la chaîne Latin-1 en UTF-8
-  //   const utf8String = utf8.encode(latin1String);
-    
-  //   return utf8String;
-  // }
 
   static convertLatin1ToUTF8(latin1String) {
     // Décodez la chaîne Latin-1 en UTF-8
@@ -219,16 +213,16 @@ class User {
     UserObject.date_inscription = formattedstartDate
     
     if(UserObject.user_category === 'entreprise') {
-      UserObject.amount_to_pay = 15000
+      UserObject.amount_to_pay = 7500
       UserObject.duree_abonnement = 365
 
     } else if (UserObject.user_category === 'etudiant') {
-      UserObject.amount_to_pay = 1000
+      UserObject.amount_to_pay = 4500
       UserObject.duree_abonnement = 1095
 
 
     } else if (UserObject.user_category === 'particulier') {
-      UserObject.amount_to_pay = 7000
+      UserObject.amount_to_pay = 5000
       UserObject.duree_abonnement = 365
 
     }

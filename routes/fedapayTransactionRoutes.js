@@ -4,6 +4,9 @@ const router = Router();
 import UserPayment from "../controllers/fedapayTransactionController.js";
 
 // const { signUp, signIn } = require('../controllers/userController')
+router.route('/getserveururl').get( UserPayment.getServerUrl)
+
+router.route('/getCountry/:countryCode').get(UserPayment.getCountryByCountryCode);
 
 router.route('/createtransaction').post(UserPayment.createFedaTransaction);
 
