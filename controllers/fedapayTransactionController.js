@@ -90,8 +90,7 @@ class UserPayment {
   
   
   
-  
-  
+    
   static generateTokenTransaction = async (req, res) => {
     try {
       const { transactionId } = req.body;
