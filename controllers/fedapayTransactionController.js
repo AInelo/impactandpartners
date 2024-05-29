@@ -106,12 +106,38 @@ class UserPayment {
   };
   
   static callback = async (req, res) => {
-    const { id, status } = req.query;
+    const {id, status}  = req.query;
     // Traiter les données de retour de la transaction
     console.log('ID de la transaction :', id);
-    console.log('Statut de la transaction :', status);
+    // console.log('Statut de la transaction :', status);
+
+    try {
+      const transaction = await Transaction.retrieve(id);
+      
+
+      // if (transaction) {
+      //   // Vérifier si le statut de la transaction est 'successful'
+      //   if (status === 'successful') {
+         
+      //       res.redirect('/success'); // ou res.json({ message: "Paiement réussi" });
+      //     } else {
+      //       res.status(404).json({ error: "Utilisateur non trouvé" });
+      //     }
+      //   } else {
+      //     res.redirect('/failure'); // ou res.json({ error: "Échec du paiement" });
+      //   }
+      // // } else {
+      // //   res.status(404).json({ error: "Transaction non trouvée" });
+      // // }
+
+      res.status(200).json(transaction);
+
+    } catch (error) {
+      res.status(500).json({ error: "Erreur lors de la génération du token" });
+    }
+
     // Rediriger l'utilisateur vers une page en fonction du statut de la transaction
-    res.redirect('/');
+    // res.redirect('/');
   };
 
 

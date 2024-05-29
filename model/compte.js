@@ -134,7 +134,8 @@ class Comptes {
         const result = await db.query(query, [id]);
         return result;
     } catch (error) {
-        
+      console.error(`Error while getting comptes by id ${id} : `,tables);
+
     }
   }
 

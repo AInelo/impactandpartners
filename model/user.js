@@ -37,22 +37,6 @@ class User {
 
       const query = "SELECT * FROM users WHERE email = $1";
 
-
-    //   {
-    //     "firstname": "Laiconel",
-    //     "lastname": "TOTON",
-    //     "email": "totonlionel@gmail.com",
-    //     "country_code": "229",
-    //     "numero_tel": "96769716",
-    //     "date_inscription": "02-02-2024",
-    //     "date_paiement": null,
-    //     "amount_to_pay": 1000,
-    //     "user_category": "etudiant",
-    //     "type_user": "simple",
-    //     "duree_abonnement": 1095
-    // }
-
-
       try {
         const results = await db.query(query, [email]);
 
@@ -228,6 +212,29 @@ class User {
     }
 
     return UserObject
+  }
+
+  static async PaymentConfirmation (user_id, date_payment, duree_abonnement) {
+    const db = new Database();
+    const query = `UPDATE users
+    SET status_paiement = false
+    WHERE users_id = $1;
+    `;
+    const query2 = `UPDATE users
+    SET date_paiement = ${date_payment}
+    WHERE users_id = $1`;
+    const query3 = `UPDATE users
+    SET duree_abonnement = ${duree_abonnement}
+    WHERE users_id = $1`;
+
+    try {
+        const result = await db.query(query, [id]);
+        return result;
+    } catch (error) {
+      console.error(`Error while getting comptes by id ${id} : `,tables);
+
+    }
+
   }
 
 }
