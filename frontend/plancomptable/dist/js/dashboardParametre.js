@@ -600,21 +600,45 @@ console.log('Fonction Payment trigged')
     const user = response.data.user 
     if (user) {
       const {
+        users_id : UserID,
         firstname: UserFirstName,
         lastname: UserLastname,
         email: UserEmail,
         status_paiement: UserStatuAbonnement,
+        date_inscription : UserDateInscription,
         amount_to_pay: UserAmounttopay,
         numero_tel : UserNumero,
         country_code : UserCountryCode,
-        user_category : UserCategory
+        user_category : UserCategory,
+        type_user : UserType
       } = user;
+
+
+      const UserdatePaiementDate = new Date
 
       try {
         const responseCountry = await axios.get(`/api/v2/payment/getCountry/${UserCountryCode}`)
         const country = responseCountry.data.country; 
-        const serverUrl_ = await axios.get('/api/v2/payment/getserveururl')
-        const URL = serverUrl_.data.serverUrl
+        const ObjectFormaliseUser = {
+          firstname :UserFirstName,
+          lastname: UserLastname, 
+          email: UserEmail, 
+          country_code: UserCountryCode, 
+          numero_tel: UserNumero, 
+          date_inscription: UserdatePaiementDate, 
+          user_category: UserCategory, 
+          type_user: UserType
+
+        } 
+        const formaliseForm = await axios.post('/formalise', ObjectFormaliseUser);
+        const UserdatePaiementDateFormatted = formaliseForm.data.date_inscription
+        const UserDureeAbonnementFormalise = formaliseForm.data.duree_abonnement
+        // data.duree_abonnement
+        // 
+        // const serverUrl_ = await axios.get('/api/v2/payment/getserveururl')
+        // const URLBegined = serverUrl_.data.serverUrl
+        // const remainedURL = `/api/v2/payment/callback?id=98082175&status=successful&user_id=1&date_paiement=""&duree_abonnement=""`
+        // const URL = URLBegined + remainedURL
 
         try {
         
@@ -625,10 +649,13 @@ console.log('Fonction Payment trigged')
               email: UserEmail,
               amounttopaid: UserAmounttopay,
               country: country,
-              url : URL
-          } 
+              user_id : UserID,
+              date_paiement: UserdatePaiementDateFormatted, 
+              duree_abonnement: UserDureeAbonnementFormalise
+            } 
           transactionResponse = await axios.post('/api/v2/payment/createtransaction', UserPaimentObject);
           const transactionId = transactionResponse.data.id;
+          const transactionStatus = transactionResponse.data.status
            
           try {
             const tokenResponse = await axios.post('/api/v2/payment/generate-token', {transactionId})

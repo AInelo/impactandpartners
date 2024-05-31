@@ -5,6 +5,33 @@ import Database from "./db/connexionDb.js";
 function initialize(passport) {
   console.log("Passport Initialized");
 
+  // const authenticateUser = (email, password, done) => {
+  //   const db = new Database();
+  //   const query = `SELECT * FROM users WHERE email = $1`;
+  //   db.query(query, [email])
+  //     .then(results => {
+  //       if (results.length > 0) {
+  //         const user = results[0];
+  //         compare(password, user.password, (err, isMatch) => {
+  //           if (err) {
+  //             return done(err);
+  //           }
+  //           if (isMatch) {
+  //             return done(null, user);
+  //           } else {
+  //             return done(null, false, { message: "Password is incorrect" });
+  //           }
+  //         });
+  //       } else {
+  //         return done(null, false, { message: "No user with that email address" });
+  //       }
+  //     })
+  //     .catch(err => {
+  //       console.error('Erreur lors de la récupération des utilisateurs : ', err);
+  //       return done(err);
+  //     });
+  // };
+
   const authenticateUser = (email, password, done) => {
     const db = new Database();
     const query = `SELECT * FROM users WHERE email = $1`;
@@ -12,12 +39,26 @@ function initialize(passport) {
       .then(results => {
         if (results.length > 0) {
           const user = results[0];
+          
+          if (user.is_logged_in) {
+            return done(null, false, { message: "User already logged in from another device" });
+          }
+  
           compare(password, user.password, (err, isMatch) => {
             if (err) {
               return done(err);
             }
             if (isMatch) {
-              return done(null, user);
+              // Update the user's status to logged in
+              const updateQuery = `UPDATE users SET is_logged_in = TRUE WHERE users_id = $1`;
+              db.query(updateQuery, [user.users_id])
+                .then(() => {
+                  return done(null, user);
+                })
+                .catch(err => {
+                  console.error('Error updating user login status: ', err);
+                  return done(err);
+                });
             } else {
               return done(null, false, { message: "Password is incorrect" });
             }
@@ -27,10 +68,14 @@ function initialize(passport) {
         }
       })
       .catch(err => {
-        console.error('Erreur lors de la récupération des utilisateurs : ', err);
+        console.error('Error fetching users: ', err);
         return done(err);
       });
   };
+  
+
+
+
 
   passport.use(new LocalStrategy({ usernameField: "email", passwordField: "password" }, authenticateUser));
   
@@ -52,5 +97,7 @@ function initialize(passport) {
       });
   });
 }
+
+
 
 export default initialize;

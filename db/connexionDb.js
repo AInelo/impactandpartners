@@ -21,16 +21,16 @@ const poole = new Pool({
 class Database {
   constructor() {
     this.pool = new Pool({
-      user: 'postgres',
-      host: 'localhost',
-      database: 'postgres',
-      password: '1234',
+      // user: 'postgres',
+      // host: 'localhost',
+      // database: 'postgres',
+      // password: '1234',
+      // port: 5432
+      user: 'lionel_impact',
+      host: 'dpg-cnss2amct0pc73ejha0g-a',
+      database: 'laraveldatabase_6pc1',
+      password: '7bVziQY78RppLqwMqXjGo0kLvLnveqJi',
       port: 5432
-      // user: 'process.env.DB_USER',
-      // host: 'process.env.DB_HOST',
-      // database: 'process.env.DB_HOS',
-      // password: 'process.env.DB_PASSWORD',
-      // port: process.env.DB_PORT,
     });
   }
 

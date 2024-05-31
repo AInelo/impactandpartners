@@ -214,28 +214,66 @@ class User {
     return UserObject
   }
 
-  static async PaymentConfirmation (user_id, date_payment, duree_abonnement) {
+  static async PaymentConfirmation(user_id, date_payment, duree_abonnement) {
     const db = new Database();
-    const query = `UPDATE users
-    SET status_paiement = false
-    WHERE users_id = $1;
+    const query1 = `
+        UPDATE users
+        SET status_paiement = true
+        WHERE users_id = $1;
     `;
-    const query2 = `UPDATE users
-    SET date_paiement = ${date_payment}
-    WHERE users_id = $1`;
-    const query3 = `UPDATE users
-    SET duree_abonnement = ${duree_abonnement}
-    WHERE users_id = $1`;
+    const query2 = `
+        UPDATE users
+        SET date_paiement = $2
+        WHERE users_id = $1;
+    `;
+    const query3 = `
+        UPDATE users
+        SET duree_abonnement = $3
+        WHERE users_id = $1;
+    `;
 
     try {
-        const result = await db.query(query, [id]);
-        return result;
-    } catch (error) {
-      console.error(`Error while getting comptes by id ${id} : `,tables);
+      // Commencer une transaction
+      await db.query('BEGIN');
+      
+      // Exécuter les requêtes de mise à jour
+      await db.query(query1, [user_id]);
+      await db.query(query2, [user_id, date_payment]);
+      await db.query(query3, [user_id, duree_abonnement]);
+      
+      // Valider la transaction
+      await db.query('COMMIT');
 
+      return { success: true };
+    } catch (error) {
+      // Annuler la transaction en cas d'erreur
+      await db.query('ROLLBACK');
+      console.error(`Error while updating user ${user_id}:`, error);
+      throw error;  // Renvoyer l'erreur pour que l'appelant puisse la gérer
     }
+  }
+
+
+
+  static async EnableConnectedStatus () {
+    const db = new Database();
+    const query = `
+    UPDATE users
+    SET connect_state = true
+    WHERE users_id = $1;
+`
 
   }
+
+  static async DisableConnectedStatus () {
+    const db = new Database();
+    const query =`
+    UPDATE users
+    SET connect_state = false
+    WHERE users_id = $1;
+`
+  }
+
 
 }
 

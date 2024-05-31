@@ -1,6 +1,8 @@
 import User from "../model/user.js";
 import path from 'path';
 import { fileURLToPath } from 'url';
+import Database from '../db/connexionDb.js';
+
 
 
 // Définir __dirname en utilisant import.meta.url
@@ -73,23 +75,47 @@ class UserController {
     }
     
     static loginPost(req, res) {
+
+      if (req.user) {
         const firstNameLowercase = req.user.firstname.toLowerCase();
-        res.redirect("/dashboard/" + firstNameLowercase);
+        res.redirect('/dashboard/' + firstNameLowercase);
+      } else {
+        res.redirect('/login');
+      }
+
+
+        // const firstNameLowercase = req.user.firstname.toLowerCase();
+        // res.redirect("/dashboard/" + firstNameLowercase);
     }
     
+ 
+    // static logout(req, res) {
+    //     req.logout((err) => {
+    //         if (err) {
+    //         console.error("Erreur lors de la déconnexion :", err);
+    //         res.status(500).send("Erreur lors de la déconnexion");
+    //         } else {
+    //         res.redirect("/");
+    //         console.log("Déconnexion réussie");
+    //         }
+    //     });
+    // }
 
 
-
-
-    static logout(req, res) {
-        req.logout((err) => {
-            if (err) {
-            console.error("Erreur lors de la déconnexion :", err);
-            res.status(500).send("Erreur lors de la déconnexion");
-            } else {
-            res.redirect("/");
-            console.log("Déconnexion réussie");
-            }
+    static logout (req, res, next) {
+      const userId = req.user.users_id;
+      const db = new Database();
+      const query = `UPDATE users SET is_logged_in = FALSE WHERE users_id = $1`;
+      db.query(query, [userId])
+        .then(() => {
+          req.logout((err) => {
+            if (err) { return next(err); }
+            res.redirect('/login');
+          });
+        })
+        .catch(err => {
+          console.error('Error updating user logout status: ', err);
+          res.redirect('/dashboard'); // Or handle the error appropriately
         });
     }
 
@@ -141,15 +167,16 @@ class UserController {
             user_category, 
             type_user } = req.body
   
-          const finalObject = await User.ConformationSignUpInformation({ 
+          const finalObject = User.ConformationSignUpInformation({
             firstname,
-            lastname, 
-            email, 
-            country_code, 
-            numero_tel, 
-            date_inscription, 
-            user_category, 
-            type_user });
+            lastname,
+            email,
+            country_code,
+            numero_tel,
+            date_inscription,
+            user_category,
+            type_user
+          });
 
             res.status(200).json(finalObject)
 

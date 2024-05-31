@@ -5,6 +5,8 @@ import bodyParser from 'body-parser';
 import { FedaPay, Transaction } from "fedapay";
 import asyncWrapper from '../middleware/async.js';
 import { response } from 'express';
+import User from "../model/user.js";
+
 
 FedaPay.setApiKey("sk_live_CaZH-pW0S9lqhGldYsaQf0C2");
 
@@ -55,10 +57,11 @@ class UserPayment {
   static createFedaTransaction = asyncWrapper(async (req, res) => {
     console.log(req.body)
 
-    const {firstname, lastname, number, email, amounttopaid, country, url }= req.body
+    const {firstname, lastname, number, email, amounttopaid, country, user_id, date_paiement, duree_abonnement}= req.body
 
       try {
-      
+        const serverUrl = req.protocol + '://' + req.get('host');
+        console.log("Voici l'url du serveur :" + serverUrl)
         console.log('le montant à payer est : ' + amounttopaid);
         const transaction = await Transaction.create({
           description: "Abonnement Impact And Partners",
@@ -66,7 +69,7 @@ class UserPayment {
           currency: {
             iso: "XOF",
           },
-          callback_url: url,
+          callback_url: "",
           customer: {
             firstname: firstname,
             lastname: lastname,
@@ -77,7 +80,9 @@ class UserPayment {
             },
           },
         });
-    
+        
+        transaction.callback_url = serverUrl + `/api/v2/payment/callback?id=${transaction.id}&user_id=${user_id}&date_paiement=${date_paiement}&duree_abonnement=${duree_abonnement}`
+
         res.status(200).json(transaction);
     
       } catch (error) {
@@ -105,41 +110,30 @@ class UserPayment {
     }
   };
   
+ 
   static callback = async (req, res) => {
-    const {id, status}  = req.query;
-    // Traiter les données de retour de la transaction
+    const { id, user_id, date_paiement, duree_abonnement } = req.query;
     console.log('ID de la transaction :', id);
-    // console.log('Statut de la transaction :', status);
 
     try {
-      const transaction = await Transaction.retrieve(id);
-      
+        const transaction = await Transaction.retrieve(id);
+        if (transaction) {
+            const status = transaction.status;
 
-      // if (transaction) {
-      //   // Vérifier si le statut de la transaction est 'successful'
-      //   if (status === 'successful') {
-         
-      //       res.redirect('/success'); // ou res.json({ message: "Paiement réussi" });
-      //     } else {
-      //       res.status(404).json({ error: "Utilisateur non trouvé" });
-      //     }
-      //   } else {
-      //     res.redirect('/failure'); // ou res.json({ error: "Échec du paiement" });
-      //   }
-      // // } else {
-      // //   res.status(404).json({ error: "Transaction non trouvée" });
-      // // }
-
-      res.status(200).json(transaction);
-
+            // Vérifier si le statut de la transaction est 'successful'
+            if (status === 'successful') {
+                await User.PaymentConfirmation(user_id, date_paiement, duree_abonnement);
+                return res.redirect('/'); // ou res.json({ message: "Paiement réussi" });
+            } else {
+                return res.status(404).json({ error: "Utilisateur non trouvé" });
+            }
+        } else {
+            return res.redirect('/failure'); // ou res.json({ error: "Échec du paiement" });
+        }
     } catch (error) {
-      res.status(500).json({ error: "Erreur lors de la génération du token" });
+        return res.status(500).json({ error: "Erreur lors de la génération du token" });
     }
-
-    // Rediriger l'utilisateur vers une page en fonction du statut de la transaction
-    // res.redirect('/');
   };
-
 
 }
 

@@ -83,7 +83,9 @@ CREATE TABLE users (
   duree_abonnement INT DEFAULT 365,
   amount_to_pay  INT,
   user_category VARCHAR(50),
-  type_user VARCHAR(50)
+  type_user VARCHAR(50), 
+  is_logged_in BOOLEAN DEFAULT false,
+  free_energy INT DEFAULT 10000
 );
 
 
