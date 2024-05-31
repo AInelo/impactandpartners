@@ -102,11 +102,11 @@ class UserController {
     // }
 
 
-    static logout (req, res, next) {
+    static async logout (req, res, next) {
       const userId = req.user.users_id;
       const db = new Database();
-      const query = `UPDATE users SET is_logged_in = FALSE WHERE users_id = $1`;
-      db.query(query, [userId])
+      const query = `UPDATE users SET is_logged_in = false WHERE users_id = $1`;
+      await db.query(query, [userId])
         .then(() => {
           req.logout((err) => {
             if (err) { return next(err); }
