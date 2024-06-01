@@ -273,3 +273,90 @@ Inventory IC: Inventory[
 {
     fundID:
 }
+
+
+
+
+
+[ 
+    cashIn, 
+    cashIn.delayed_compensation, 
+    cashIn.fees_and_commissions, 
+    cashIn.total_realized, 
+    cashIn.realized_cost, 
+    cashIn.divestment_at_ost, 
+    cashIn.cash_and_pik_revenues, 
+    cashIn.other_income, 
+    cashIn.other_expenses, 
+    cashIn.net_capital_gains, 
+    
+    cashOut, 
+    cashOut.total_investment_at_cost, 
+    cashOut.nominal_principal_invested, 
+    cashOut.nominal_principal_invested_settled, 
+    cashOut.nominal_principal_invested_unsettled, 
+    cashOut.nominal_principal_invested_IC, 
+    cashOut.nominal_principal_invested_settled_IC, 
+    cashOut.nominal_principal_invested_unsettled_IC, 
+    
+    portfolio, 
+    portfolio.residual_nominal_principal_investment, 
+    portfolio.residual_nominal_principal_investment_IC, 
+    portfolio.residual_investment_at_cost, 
+    portfolio.residual_investment_at_cost_IC, 
+    portfolio.quantity, 
+    
+    generalInformation, 
+    generalInformation.investor, 
+    generalInformation.investee, 
+    generalInformation.security, 
+    generalInformation.securityEDMID, 
+    generalInformation.securityClass, 
+    generalInformation.deal
+]
+
+
+
+
+
+[
+    cashIn = cashIn [
+        delayed_compensation = cashIn.delayed_compensation, 
+        fees_and_commissions = cashIn.fees_and_commissions, 
+        total_realized = cashIn.total_realized, 
+        realized_cost = cashIn.realized_cost, 
+        divestment_at_ost = cashIn.divestment_at_ost, 
+        cash_and_pik_revenues = cashIn.cash_and_pik_revenues, 
+        other_income = cashIn.other_income, 
+        other_expenses = cashIn.other_expenses, 
+        net_capital_gains = cashIn.net_capital_gains
+    ],
+    cashOut = cashOut [
+        total_investment_at_cost = cashOut.total_investment_at_cost, 
+        nominal_principal_invested = cashOut.nominal_principal_invested, 
+        nominal_principal_invested_settled = cashOut.nominal_principal_invested_settled, 
+        nominal_principal_invested_unsettled = cashOut.nominal_principal_invested_unsettled, 
+        nominal_principal_invested_IC = cashOut.nominal_principal_invested_IC, 
+        nominal_principal_invested_settled_IC = cashOut.nominal_principal_invested_settled_IC, 
+        nominal_principal_invested_unsettled_IC = cashOut.nominal_principal_invested_unsettled_IC
+    ], 
+
+    portfolio = portfolio [
+        residual_nominal_principal_investment =   portfolio.residual_nominal_principal_investment, 
+        residual_nominal_principal_investment_IC = portfolio.residual_nominal_principal_investment_IC, 
+        residual_investment_at_cost = portfolio.residual_investment_at_cost, 
+        residual_investment_at_cost_IC = portfolio.residual_investment_at_cost_IC, 
+        quantity = portfolio.quantity
+    ] 
+     
+    
+    generalInformation = generalInformation [
+        investor =    generalInformation.investor, 
+        investee =  generalInformation.investee, 
+        security =  generalInformation.security, 
+        securityEDMID =  generalInformation.securityEDMID, 
+        securityClass =  generalInformation.securityClass, 
+        deal=  generalInformation.deal
+    ] 
+    
+]
