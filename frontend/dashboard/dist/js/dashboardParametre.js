@@ -1,3 +1,42 @@
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const NameConainer = document.getElementById("NameContainerInUp");
+
+  try {
+    const userResponse = await axios.post("/user");
+
+    const user = userResponse.data.user;
+
+    if (userResponse.data.user) {
+      const user = userResponse.data.user;
+
+      // Récupérer le nom de famille en minuscules depuis les informations de l'utilisateur
+      const firstNameLowercase = user.firstname.toLowerCase();
+      const UserFirstName = user.firstname;
+      const UserLastname = user.lastname;
+      console.log("Bienvenue: " + UserLastname + UserFirstName);
+
+      ButtonNameContent = ` <div>${UserLastname} ${UserFirstName}</div>
+                    <div class="connecte-container">
+                    <div class="mt-1 small text-muted">Connecté</div>
+                    <span class="badger"></span>
+            </div>`;
+
+      NameConainer.innerHTML = ButtonNameContent;
+    } else {
+      console.log("L'utilisateur est vide.");
+    }
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des informations de l'utilisateur :",
+      userResponse.data.message
+    );
+    alert(
+      "Erreur lors de la récupération des informations de l'utilisateur. Veuillez réessayer."
+    );
+  }
+});
+
 //-------- Verify if the User has an abonnement ----------------//
 
 async function VerifyAbonnement() {
@@ -80,7 +119,7 @@ async function InCaseAbonnementActive () {
                   <div class="card-body">
                     <div class="row align-items-center">
                       <div class="col-3">
-                        <img src="https://cdn.dribbble.com/users/844826/screenshots/14553706/media/2be9a4847b939e02702648d058cf2df8.png" alt="Food Deliver UI dashboards" class="rounded">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/lasmo-74fe3.appspot.com/o/AdobeStock_131814515.jpeg?alt=media&token=c30a4b91-9730-4119-bc13-6ed6750ef00a" alt="Food Deliver UI dashboards" class="rounded">
                       </div>
                       <div class="col">
                         <h3 class="card-title mb-1">

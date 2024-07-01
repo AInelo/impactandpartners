@@ -242,7 +242,6 @@ let index = [1, 2];
 
 for (let i = 0; i < index.length; i++) {
   getClassesAndDisplayByTypesClasse(index[i], choiceClassesDom[i]);
-  
 }
 
 for (let i = 0; i < choiceBtn.length; i++) {

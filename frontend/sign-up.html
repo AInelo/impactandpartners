@@ -34,7 +34,7 @@
 
         <form class="card card-md" novalidate>
           <div class="card-body">
-            <h2 class="card-title text-center mb-4">Créer un nouveau compte</h2>
+            <h2 class="card-title text-center mb-4">S'inscrire</h2>
             
             <div class="input-icon mb-3">
               <span class="input-icon-addon">
@@ -58,9 +58,9 @@
             <div class="mb-3">
               <label class="form-label">Mot de passe</label>
               <div class="input-group input-group-flat">
-                <input id="password" type="password" class="form-control"  placeholder="mot de passe"  autocomplete="off">
+                <input id="password1" type="password" class="form-control"  placeholder="mot de passe"  autocomplete="off">
                 <span class="input-group-text">
-                  <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+                  <a href="#" id="password1Show" class="link-secondary" title="Montrer mot de passe" data-bs-toggle="tooltip">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
                   </a>
                 </span>
@@ -71,7 +71,7 @@
               <div class="input-group input-group-flat">
                 <input id="password2" type="password" class="form-control"  placeholder="mot de passe"  autocomplete="off">
                 <span class="input-group-text">
-                  <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+                  <a href="#"  id="password2Show" class="link-secondary" title="Montrer mot de passe" data-bs-toggle="tooltip">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
                   </a>
                 </span>
@@ -131,7 +131,7 @@
               </label>
             </div>
             <div class="form-footer">
-              <button id="registerButton" class="btn btn-primary w-100">Créer</button>
+              <button id="registerButton" class="btn btn-primary w-100">S'inscrire</button>
             </div>
           </div>
         </form>
@@ -147,6 +147,25 @@
     <!-- Axios Libs -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
       
+
+    <script>
+      document.getElementById('password1Show').addEventListener('click', (e) => {
+        e.preventDefault();
+        var password1Input = document.getElementById('password1');
+
+        password1Input.type === 'password' ? password1Input.type = 'text' : password1Input.type = 'password';
+
+      });
+      document.getElementById('password2Show').addEventListener('click', function (e) {
+        e.preventDefault();
+        var password2Input = document.getElementById('password2');
+
+        password2Input.type === 'password' ? password2Input.type = 'text' : password2Input.type = 'password';
+
+      });
+    </script>
+
+
       <script>
         function WhichBoxChecked () {
           const radios = document.querySelectorAll('input[name="btn-radio-basic"]');
@@ -200,7 +219,7 @@
 
 
 
-        const password = document.getElementById("password").value;
+        const password1 = document.getElementById("password1").value;
         const password2 = document.getElementById("password2").value;
 
 
@@ -238,7 +257,7 @@
                       firstname: UserFinalFormalise.firstname,
                       lastname: UserFinalFormalise.lastname,
                       email: UserFinalFormalise.email,
-                      password: password, 
+                      password: password1, 
                       password2: password2,
                       country_code: UserFinalFormalise.country_code,
                       numero_tel: UserFinalFormalise.numero_tel,

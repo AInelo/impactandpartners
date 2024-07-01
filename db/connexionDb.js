@@ -16,21 +16,23 @@ const poole = new Pool({
   ssl: isProduction,
 });
 
+// postgresql://impact_partners:04nn0K7hrX5jPBLFjd3ZN6vr9PgIPppw@dpg-cq0ohc6ehbks73ef50e0-a/ipofafricacomptaplandatabase
 
-//lionel_impact:7bVziQY78RppLqwMqXjGo0kLvLnveqJi@dpg-cnss2amct0pc73ejha0g-a.oregon-postgres.render.com/laraveldatabase_6pc1
+// postgresql://impact_partners:04nn0K7hrX5jPBLFjd3ZN6vr9PgIPppw@dpg-cq0ohc6ehbks73ef50e0-a.oregon-postgres.render.com/ipofafricacomptaplandatabase
+
 class Database {
   constructor() {
     this.pool = new Pool({
-      // user: 'postgres',
-      // host: 'localhost',
-      // database: 'postgres',
-      // password: '1234',
-      // port: 5432
-      user: 'lionel_impact',
-      host: 'dpg-cnss2amct0pc73ejha0g-a',
-      database: 'laraveldatabase_6pc1',
-      password: '7bVziQY78RppLqwMqXjGo0kLvLnveqJi',
+      user: 'postgres',
+      host: 'localhost',
+      database: 'postgres',
+      password: '1234',
       port: 5432
+      // user: 'lionel_impact',
+      // host: 'dpg-cnss2amct0pc73ejha0g-a',
+      // database: 'laraveldatabase_6pc1',
+      // password: '7bVziQY78RppLqwMqXjGo0kLvLnveqJi',
+      // port: 5432
     });
   }
 
