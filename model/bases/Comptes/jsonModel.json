@@ -1,0 +1,23 @@
+[
+    {
+    "typeclasse": [
+        {
+        "id": 1,
+        "nom": "Comptes",
+        "description": "Comptes",
+        "compte": [ 
+            {
+            "id": 1,
+            "nom": "Compte 1",
+            "description": "Compte 1",
+            "classe": 1
+            }
+        ]
+        }
+    ]
+
+    }
+
+
+
+]

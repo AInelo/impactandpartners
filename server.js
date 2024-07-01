@@ -19,6 +19,7 @@ import Database from './db/connexionDb.js';
 import comptes from './routes/comptesRoutes.js';
 import users from './routes/usersRoutes.js';
 import payment from './routes/fedapayTransactionRoutes.js'
+import typeclassemap from './routes/JsonFormatTypeClassRoute.js';
 import initializePassport from './passportConfig.js';
 
 // Initialiser l'application Express
@@ -47,6 +48,7 @@ app.use(passport.session());
 
 // Routes
 app.use('/api/v1/comptes', comptes);
+app.use('/api/comptemap', typeclassemap)
 app.use('/api/v2/payment', payment)
 app.use('/', users);
 
