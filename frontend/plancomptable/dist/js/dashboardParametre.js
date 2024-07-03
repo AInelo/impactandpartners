@@ -1,5 +1,7 @@
 //-------- Verify if the User has an abonnement ----------------//
 
+// import axios from "axios";
+
 
 // {
 //   "user": {
@@ -285,7 +287,7 @@ function VerifyIfaTypeClasseIsClicked() {
 
 
 
-// ------------------   Logout API Call   -----------------------------------//
+// ------------------   To show the firstname and lastname of User in the Box   -----------------------------------//
 // const logoutButton = document.querySelector(".logoutButton");
 //   // document.addEventListener("DOMContentLoaded", function () {
 //     logoutButton.addEventListener("click", async function (e) {
@@ -484,12 +486,12 @@ const getSousComptesAndDisplayByComptes = async (id) => {
   }
 };
 
+//---------get all comptes and display by Classe -----------//
 const getComptesAndDisplayByClasse = async (id) => {
   const ComptesDOM = document.getElementById("showComptes");
   const nameOfAllComptesDOM = document.getElementById("nameOfAllComptesDOM");
   const loaderDOMComptes = document.querySelector(".loaderComptes");
   console.log(id);
-
 
   try {
     const {
@@ -531,7 +533,7 @@ const getComptesAndDisplayByClasse = async (id) => {
     nameOfAllComptesDOM.innerText = firstClassComptesName;
   } catch (error) {
     console.error("l'erreur", error);
-    comptesDOM.innerHTML =
+    ComptesDOM.innerHTML =
       '<h3 class="empty-list">There was an error, please try later....</h3>';
   }
 };
@@ -591,6 +593,8 @@ const getElementBySearching = async (detaill, id) => {
 
 
 
+//-------------------------Triger to Payement Process----------------------------------//
+
 
 const  TriggerPaymentMethod = async () => {
 console.log('Fonction Payment trigged')
@@ -613,7 +617,8 @@ console.log('Fonction Payment trigged')
       } = user;
 
 
-      const UserdatePaiementDate = new Date
+      const UserdatePaiementDate = new Date();
+
 
       try {
         const responseCountry = await axios.get(`/api/v2/payment/getCountry/${UserCountryCode}`)
@@ -629,16 +634,11 @@ console.log('Fonction Payment trigged')
           type_user: UserType
 
         } 
+        console.log(ObjectFormaliseUser)
         const formaliseForm = await axios.post('/formalise', ObjectFormaliseUser);
         const UserdatePaiementDateFormatted = formaliseForm.data.date_inscription
         const UserDureeAbonnementFormalise = formaliseForm.data.duree_abonnement
-        // data.duree_abonnement
-        // 
-        // const serverUrl_ = await axios.get('/api/v2/payment/getserveururl')
-        // const URLBegined = serverUrl_.data.serverUrl
-        // const remainedURL = `/api/v2/payment/callback?id=98082175&status=successful&user_id=1&date_paiement=""&duree_abonnement=""`
-        // const URL = URLBegined + remainedURL
-
+        
         try {
         
           UserPaimentObject = {
@@ -649,20 +649,30 @@ console.log('Fonction Payment trigged')
               amounttopaid: UserAmounttopay,
               country: country,
               user_id : UserID,
-              date_paiement: UserdatePaiementDateFormatted, 
+              // date_paiement: UserdatePaiementDateFormatted, 
+           //   date_paiement: UserdatePaiementDate,
               duree_abonnement: UserDureeAbonnementFormalise
             } 
+            console.log(UserPaimentObject);
           transactionResponse = await axios.post('/api/v2/payment/createtransaction', UserPaimentObject);
           const transactionId = transactionResponse.data.id;
           const transactionStatus = transactionResponse.data.status
-           
-          try {
-            const tokenResponse = await axios.post('/api/v2/payment/generate-token', {transactionId})
 
-            window.location.href = tokenResponse.data.token;
-          } catch (error) {
-            console.error(error)
-          }
+            try {
+              const tokenResponse = await axios.post('/api/v2/payment/generate-token', {transactionId})
+  
+              
+              try {
+
+                window.location.href = tokenResponse.data.token;
+              } catch (error) {
+                console.error("erreur lors la mise  à jour du status de paiement de l'utilisateur" + error)
+              }
+  
+  
+            } catch (error) {
+             console.error('la mise à jour du status a échoué' + error)
+            }        
   
         } catch (error) {
           console.error(error)
@@ -681,6 +691,17 @@ console.log('Fonction Payment trigged')
   }
 
 }
+
+   // try {
+          //   await axios.get('/api/v2/payment/callback', {
+          //     id : transactionId , 
+          //     user_id : UserID , 
+          //     date_paiement : UserdatePaiementDateFormatted , 
+          //     duree_abonnement : UserDureeAbonnementFormalise
+          //   })
+          // } catch (error) {
+          //   console.error("erreur lors de la confirmation et du retour à la page d'acceuil " + error)
+          // }
 
 
 

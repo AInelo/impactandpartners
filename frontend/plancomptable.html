@@ -696,134 +696,49 @@
         <div class="page-body">
           <div class="container-xl">
 
-            <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
-              <div class="offcanvas-header">
-                <h2 class="offcanvas-title" id="offcanvasTopLabel"><span id="" class="badge bg-red hidden"></span>ATTENTION <a class="ExlamationPoint" >!</a> </h2>
-                <button type="button" class="CloseModaleBtn btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-              </div>
-              
-              <div class="offcanvas-body">
-                <div>
-                  Veuillez Choissir entre la LISTE DES COMPTES - SYSCOHADA RÉVISÉ ou LISTE DES COMPTES - DES ENTITÉS À BUT NON LUCRATIF
-                </div>
-                <div class="mt-3">
-                  <button  class="CloseModaleBtn btn btn-primary" type="button" data-bs-dismiss="offcanvas">
-                    Fermer
-                  </button>
-                </div>
-              </div>
-            </div>
+            
+
             <div class="row row-deck row-cards">
               
-             
-              <!-- START CHOICE OF TYPES OF ACCOUNT SEARCHING -->
-              <div class="col-md-6">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="row g-2 align-items-center">
-                      <div class="col">
-                        <h4 class="card-title m-0">
-                          <a href="#">SYSCOHADA RÉVISÉ - </a>
-                        </h4>
-                        <div class="text-muted">
-                        LISTE DES COMPTES 
-                        </div>
-                        <div class="small mt-1">
-                          <span id="lucratif" class="TypeClasseBadge badge bg-green hidden"></span> 
-                        </div>
-                      </div>
-                      <div class="col-auto">
-                        <button id="btnLucratif" href="#" class="btn">
-                          Choisir
-                        </button>
-                      </div>
-
-                    </div>
+              <div class="col-lg-12">
+                <div class="row row-cards">
+                  <!-- START OF CLASSE NAME -->
+                  <div id="BoxClasseShowing"  class="mb-3">
+                    <label  class="form-label">
+                      <span class="badge bg-green"></span> Décrivez l'élément que dont vous souhaitez attibuer un compte dans le plan comptable pour votre travail... : 
+                    </label>
                   </div>
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="row g-2 align-items-center">
-                      
-                      <div class="col">
-                        <h4 class="card-title m-0">
-                          <a href="#"> DES ENTITÉS À BUT NON LUCRATIF - </a>
-                        </h4>
-                        <div class="text-muted">
-                          LISTE DES COMPTES
+                  <!-- END OF CLASSE NAME  -->
+                  <!-- START OF ACCOUNT FINDING RESULTS -->
+                  <div class="col-12">
+                    <div class="card" style="height: 8rem">
+                      <div class="card-body card-body-scrollable card-body-scrollable-shadow">
+                        <div id="showResultRequest" class="divide-y">
+                            <!-- <div class="containerLoaderComptes">
+                              <div class="loaderComptes"></div>
+                            </div> -->
                         </div>
-                        <div class="small mt-1">
-                          <span id="nonLucratif" class="TypeClasseBadge badge bg-green hidden"></span>
-                        </div>
-                      </div>
-                      <div class="col-auto">
-                        <button id="btnNonLucratif" href="#" class="btn">
-                          Choisir
-                        </button>
-                      </div>
-                      <div class="col-auto">
-                        
                       </div>
                     </div>
                   </div>
+                  <!-- END OF ACCOUNT FINDING RESULTS -->
                 </div>
               </div>
-              <!-- END CHOICE OF TYPES OF ACCOUNT SEARCHING -->
-
-
-
-
-
-
-              <!-- START CHOICES OF CLASSES -->
-
-              <div id="classLucratif" class="col-12 hidden">
-                <div class="card">
-                  <div class="card-header">
-                    <h3 class="card-title">Les classes: LISTE DES COMPTES SYSCOHADA RÉVISÉ</h3>
-                  </div>
-                  <div class="card-body">
-                    <div id="classesDomLucratif" class="row g-3">
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
-              <div  id="classNonLucratif" class="col-12 hidden">
-                <div class="card">
-                  <div class="card-header">
-                    <h3 class="card-title">Les Classes : LISTE DES COMPTES DES ENTITÉS À BUT NON LUCRATIF </h3>
-                  </div>
-                  <div class="card-body"> 
-                    <div id="classesDomNonLucratif" class="row g-3">
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- END CHOICES OF CLASSES -->
-
-
 
               <div class="col-lg-12">
-                <div id="BoxSousComptesShowing" class="row row-cards">
+                <div id="" class="row row-cards">
                   <!-- START REQUEST TO OPENAI  -->
                   <div class="mb-3">
-                    <label class="form-label">Décrivez l'élément que dont vous souhaitez attibuer un compte dans le plan comptable pour votre travail...</label>
+                    <label class="form-label">Entrez description ici</label>
                     <div class="row g-2">
                       <div class="col">
-                        <textarea name="" id="" class="form-control" cols="30" rows="7"></textarea>
+                        <textarea name="" id="requestDescription" class="form-control" cols="30" rows="5"></textarea>
                         <br>
                         <div class="col-auto ms-auto d-print-none">
-                          <div class="btn-list">
-                            <a href="#" class="btn btn-primary d-none d-sm-inline-block">
+                          <div id="triggerRequest" class="btn-list">
+                            <div  href="#" class="btn btn-primary d-none d-sm-inline-block">
                               lancer la requête
-                            </a>
+                            </div>
                           </div>
                         </div>
 
@@ -839,71 +754,7 @@
 
 
 
-              <div class="col-lg-12">
-
-                <div class="row row-cards">
-
-                  <!-- START OF CLASSE NAME -->
-                  <div id="BoxClasseShowing"  class="mb-3">
-                    <label  class="form-label">
-                      <span class="badge bg-green"></span> Classe : 
-                    </label>
-                    <div id="nameOfAllComptesDOM">
-
-                    </div>
-                  </div>
-                  <!-- END OF CLASSE NAME  -->
-
-                 
-                  <!-- START OF ACCOUNT FINDING RESULTS -->
-                  <div class="col-12">
-                    <div class="card" style="height: 28rem">
-                      <div class="card-body card-body-scrollable card-body-scrollable-shadow">
-                        <div id="showComptes" class="divide-y">
-
-                          
-                            <div class="containerLoaderComptes">
-                              <div class="loaderComptes"></div>
-                            </div>
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- END OF ACCOUNT FINDING RESULTS -->
-
-                </div>
-
-              </div>
-
-            
-
-
-
-
-
-
-                         
               
-              
-              
-
-
-
-
-
-
-
-              
-
-
-
-
-
-
-
-
-
 
 
               <div class="col-12">
@@ -920,7 +771,7 @@
                         <h3 class="h1">Documentation</h3>
                         
                         <div class="mt-3">
-                          <a href="" class="btn btn-primary" target="_blank" rel="noopener">Lire le Guide</a>
+                          <a href="" class="btn btn-primary" target="_blank" rel="noopener">Voir le Tuto</a>
                         </div>
                       </div>
                     </div>
@@ -1071,16 +922,15 @@
     <script src="./dist/libs/jsvectormap/dist/maps/world-merc.js?1684106062" defer></script>
     <script src="./dist/js/dashboardParametre.js" defer></script>
     <script src="./dist/js/partOfIA.js"></script>
+    <script src="./dist/js/AdviceRequest.js"></script>
+
 
     <!-- Tabler Core -->
     <script src="./dist/js/tabler.min.js?1684106062" defer></script>
     <script src="./dist/js/demo.min.js?1684106062" defer></script>
     <!-- Axios  -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-     
-<script>
-  
+    
 
-</script>
   </body>
 </html>

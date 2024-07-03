@@ -19,6 +19,11 @@ class ComptesInfModel extends BaseModel {
     const query = `SELECT * FROM comptes_inf WHERE sous_comptes_id = $1`;
     return await this.query(query, [sousComptesId]);
   }
+
+  async getBySousComptesIdForAdvice(sousComptesId) {
+    const query = `SELECT nbr, name FROM comptes_inf WHERE sous_comptes_id = $1`;
+    return await this.query(query, [sousComptesId]);
+  }
 }
 
 export default ComptesInfModel;

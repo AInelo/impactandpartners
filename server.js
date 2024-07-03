@@ -20,6 +20,7 @@ import comptes from './routes/comptesRoutes.js';
 import users from './routes/usersRoutes.js';
 import payment from './routes/fedapayTransactionRoutes.js'
 import typeclassemap from './routes/JsonFormatTypeClassRoute.js';
+import openaimodelcompta from './routes/OpenaiRoutes.js'
 import initializePassport from './passportConfig.js';
 
 // Initialiser l'application Express
@@ -50,6 +51,7 @@ app.use(passport.session());
 app.use('/api/v1/comptes', comptes);
 app.use('/api/comptemap', typeclassemap)
 app.use('/api/v2/payment', payment)
+app.use('/api/advice', openaimodelcompta)
 app.use('/', users);
 
 

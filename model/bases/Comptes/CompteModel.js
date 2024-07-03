@@ -19,6 +19,10 @@ class ComptesModel extends BaseModel {
     const query = `SELECT * FROM comptes WHERE classes_comptes_id = $1`;
     return await this.query(query, [classesComptesId]);
   }
+  async getByClassesComptesIdForAdvice(classesComptesId) {
+    const query = `SELECT nbr, name FROM comptes WHERE classes_comptes_id = $1`;
+    return await this.query(query, [classesComptesId]);
+  }
 }
 
 export default ComptesModel;

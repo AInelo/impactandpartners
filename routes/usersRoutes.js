@@ -1,8 +1,6 @@
 import { Router } from 'express';
 const router = Router()
 import passport from 'passport'; // Importez passport ici
-
-
 import UserController   from  '../controllers/userControllers.js';
 // const {getAllInformationAboutAbonnement} = userControllers;
 

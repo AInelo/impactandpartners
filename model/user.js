@@ -161,7 +161,12 @@ class User {
   }
 
 
-// Code to define the logic of datas by category of users
+  // Code to define the logic of datas by category of users
+
+  static formaterDate (date ) {
+    const formattedDate = `${date.getDate().toString().padStart(2, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getFullYear()}`;
+    return formattedDate
+  }
 
   static ConformationSignUpInformation ({ 
      firstname,
@@ -214,36 +219,93 @@ class User {
     return UserObject
   }
 
-  static async PaymentConfirmation(user_id, date_payment, duree_abonnement) {
+  // static async PaymentConfirmation(user_id, date_payment, duree_abonnement) {
+  //   const db = new Database();
+  //   const query1 = `
+  //       UPDATE users
+  //       SET status_paiement = true
+  //       WHERE users_id = $1;
+  //   `;
+  //   const query2 = `
+  //       UPDATE users
+  //       SET date_paiement = $2
+  //       WHERE users_id = $1;
+  //   `;
+  //   const query3 = `
+  //       UPDATE users
+  //       SET duree_abonnement = $3
+  //       WHERE users_id = $1;
+  //   `;
+
+  //   try {
+  //     // Commencer une transaction
+  //     await db.query('BEGIN');
+      
+  //     // Exécuter les requêtes de mise à jour
+  //     await db.query(query1, [user_id]);
+  //     await db.query(query2, [user_id, date_payment]);
+  //     await db.query(query3, [user_id, duree_abonnement]);
+      
+  //     // Valider la transaction
+  //     await db.query('COMMIT');
+
+  //     return { success: true };
+  //   } catch (error) {
+  //     // Annuler la transaction en cas d'erreur
+  //     await db.query('ROLLBACK');
+  //     console.error(`Error while updating user ${user_id}:`, error);
+  //     throw error;  // Renvoyer l'erreur pour que l'appelant puisse la gérer
+  //   }
+  // }
+
+  static async PaymentConfirmation(user_id, duree_abonnement) {
     const db = new Database();
+    const now = new Date().toISOString();
+    const date_paiement = this.formaterDate(now)
+ 
+    console.log(`on the step of insertion : ${user_id} || ${date_paiement} || ${duree_abonnement} `)
+
     const query1 = `
-        UPDATE users
-        SET status_paiement = true
-        WHERE users_id = $1;
+      UPDATE users
+      SET status_paiement = true
+      WHERE users_id = $1;
     `;
     const query2 = `
-        UPDATE users
-        SET date_paiement = $2
-        WHERE users_id = $1;
+      UPDATE users
+      SET date_paiement = $2
+      WHERE users_id = $1;
     `;
     const query3 = `
-        UPDATE users
-        SET duree_abonnement = $3
-        WHERE users_id = $1;
+      UPDATE users
+      SET duree_abonnement = $3
+      WHERE users_id = $1;
     `;
-
+  
     try {
+      // Log des types de paramètres
+      console.log(`Types - User ID: ${typeof user_id}, Date Paiement: ${typeof date_paiement}, Durée Abonnement: ${typeof duree_abonnement}`);
+       // Convertir les types des paramètres
+      const userId = parseInt(user_id, 10);
+
+      const dureeAbonnement = parseInt(duree_abonnement, 10);
+      console.log(`Types - User ID: ${typeof userId}, Date Paiement: ${typeof date_paiement}, Durée Abonnement: ${typeof dureeAbonnement}`);
+
+
+
+
       // Commencer une transaction
       await db.query('BEGIN');
-      
+      // await db.query(query1, [userId]);
+      // await db.query(query2, [datePayment, userId]);
+      // await db.query(query3, [dureeAbonnement, userId]);
       // Exécuter les requêtes de mise à jour
-      await db.query(query1, [user_id]);
-      await db.query(query2, [user_id, date_payment]);
-      await db.query(query3, [user_id, duree_abonnement]);
+      await db.query(query1, [userId]);
+      await db.query(query2, [date_paiement, userId]); // Notez l'ordre des paramètres
+      await db.query(query3, [dureeAbonnement, userId]); // Notez l'ordre des paramètres
       
       // Valider la transaction
       await db.query('COMMIT');
-
+  
       return { success: true };
     } catch (error) {
       // Annuler la transaction en cas d'erreur
@@ -252,6 +314,9 @@ class User {
       throw error;  // Renvoyer l'erreur pour que l'appelant puisse la gérer
     }
   }
+  
+
+
 
 
 
