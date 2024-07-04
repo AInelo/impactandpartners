@@ -28,10 +28,10 @@ class Database {
       database: 'postgres',
       password: '1234',
       port: 5432
-      // user: 'lionel_impact',
-      // host: 'dpg-cnss2amct0pc73ejha0g-a',
-      // database: 'laraveldatabase_6pc1',
-      // password: '7bVziQY78RppLqwMqXjGo0kLvLnveqJi',
+      // user: 'impact_partners',
+      // host: 'dpg-cq0ohc6ehbks73ef50e0-a',
+      // database: 'ipofafricacomptaplandatabase',
+      // password: '04nn0K7hrX5jPBLFjd3ZN6vr9PgIPppw',
       // port: 5432
     });
   }
