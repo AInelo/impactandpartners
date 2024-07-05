@@ -13,8 +13,6 @@ import payment from './routes/fedapayTransactionRoutes.js';
 import typeclassemap from './routes/JsonFormatTypeClassRoute.js';
 import openaimodelcompta from './routes/OpenaiRoutes.js';
 import initializePassport from './passportConfig.js';
-import { Sequelize } from 'sequelize';
-import sessionStore from 'connect-session-sequelize';
 
 // Charger les variables d'environnement
 dotenv.config();
@@ -38,7 +36,10 @@ app.use(urlencoded({ extended: true }));
 app.use(json());
 app.use(flash());
 
-// Configuration de la session avec connect-session-sequelize
+// Utiliser un Store de Session adapté pour la production (exemple avec connect-session-sequelize)
+import { Sequelize } from 'sequelize';
+import sessionStore from 'connect-session-sequelize';
+
 const sequelize = new Sequelize({
   dialect: 'postgres',
   database: process.env.DB_NAME,
@@ -48,17 +49,12 @@ const sequelize = new Sequelize({
   port: process.env.DB_PORT,
 });
 
-const SequelizeStore = sessionStore(session.Store);
-
+const SequelizeStore = sessionStore(session);
 const sessionConfig = {
   secret: process.env.SESSION_SECRET || 'secret',
   resave: false,
   saveUninitialized: false,
-  store: new SequelizeStore({
-    db: sequelize,
-    tableName: 'Sessions', // Nom de la table pour stocker les sessions
-    expiration: 86400000, // Durée de vie de la session en millisecondes (1 jour ici)
-  }),
+  store: new SequelizeStore({ db: sequelize }),
 };
 
 app.use(session(sessionConfig));
