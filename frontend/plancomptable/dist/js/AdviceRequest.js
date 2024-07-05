@@ -17,7 +17,7 @@ document.getElementById('triggerRequest').addEventListener('click', async functi
     document.getElementById('showResultRequest').innerHTML = '<div class="loaderComptes"></div>';
 
     try {
-        const response = await axios.post('http://localhost:4001/api/advice/get-advice-gpt', data);
+        const response = await axios.post('/api/advice/get-advice-gpt', data);
         const generatedText = response.data.generated_text;
         // document.getElementById('showResultRequest').innerHTML = `<div>${generatedText}</div>`;
         // const generatedText = response.data.generated_text;
