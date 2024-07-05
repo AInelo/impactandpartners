@@ -42,6 +42,7 @@ app.use(flash());
 const redisClient = new Redis({
   host: process.env.REDIS_HOST || 'localhost', // Assurez-vous de définir REDIS_HOST dans votre fichier .env
   port: process.env.REDIS_PORT || 6379, // Assurez-vous de définir REDIS_PORT dans votre fichier .env
+  password: process.env.REDIS_PASSWORD || 'lionel',
 });
 
 const sessionConfig = {
