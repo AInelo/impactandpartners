@@ -8,7 +8,7 @@ import { response } from 'express';
 import User from "../model/user.js";
 
 
-FedaPay.setApiKey("sk_live_CaZH-pW0S9lqhGldYsaQf0C2");
+FedaPay.setApiKey(process.env.FEDAPAY_API_KEY);
 
 // FedaPay.setApiKey('sk_sandbox_R3oWQ2A3pKZyxZ0ao6c48HLX')
 FedaPay.setEnvironment("live");
