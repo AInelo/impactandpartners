@@ -781,8 +781,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const ModalElement = document.getElementById('offcanvasTop');
         ModalElement.classList.remove('show')
     }
-  } )
-} )
+  });
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('click', async (e) => {

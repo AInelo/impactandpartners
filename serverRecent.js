@@ -13,8 +13,8 @@ import payment from './routes/fedapayTransactionRoutes.js';
 import typeclassemap from './routes/JsonFormatTypeClassRoute.js';
 import openaimodelcompta from './routes/OpenaiRoutes.js';
 import initializePassport from './passportConfig.js';
-import Redis from 'ioredis';
-import RedisStore from 'connect-redis';
+import { Sequelize } from 'sequelize';
+import sessionStore from 'connect-session-sequelize';
 
 // Charger les variables d'environnement
 dotenv.config();
@@ -38,18 +38,26 @@ app.use(urlencoded({ extended: true }));
 app.use(json());
 app.use(flash());
 
-// Configuration de la session avec Redis
-const redisClient = new Redis({
-  host: process.env.REDIS_HOST || 'localhost', // Assurez-vous de définir REDIS_HOST dans votre fichier .env
-  port: process.env.REDIS_PORT || 6379, // Assurez-vous de définir REDIS_PORT dans votre fichier .env
+// Configuration de la session avec connect-session-sequelize
+const sequelize = new Sequelize({
+  dialect: 'postgres',
+  database: process.env.DB_NAME,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
 });
+
+const SequelizeStore = sessionStore(session.Store);
 
 const sessionConfig = {
   secret: process.env.SESSION_SECRET || 'secret',
   resave: false,
   saveUninitialized: false,
-  store: new RedisStore({
-    client: redisClient,
+  store: new SequelizeStore({
+    db: sequelize,
+    tableName: 'Sessions', // Nom de la table pour stocker les sessions
+    expiration: 86400000, // Durée de vie de la session en millisecondes (1 jour ici)
   }),
 };
 
