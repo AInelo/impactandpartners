@@ -23,16 +23,16 @@ const poole = new Pool({
 class Database {
   constructor() {
     this.pool = new Pool({
-      user: 'postgres',
-      host: 'localhost',
-      database: 'postgres',
-      password: '1234',
-      port: 5432
-      // user: 'impact_partners',
-      // host: 'dpg-cq0ohc6ehbks73ef50e0-a',
-      // database: 'ipofafricacomptaplandatabase',
-      // password: '04nn0K7hrX5jPBLFjd3ZN6vr9PgIPppw',
+      // user: 'postgres',
+      // host: 'localhost',
+      // database: 'postgres',
+      // password: '1234',
       // port: 5432
+      user: 'impact_partners',
+      host: 'dpg-cq0ohc6ehbks73ef50e0-a',
+      database: 'ipofafricacomptaplandatabase',
+      password: '04nn0K7hrX5jPBLFjd3ZN6vr9PgIPppw',
+      port: 5432
     });
   }
 

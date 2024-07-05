@@ -91,14 +91,15 @@ CREATE TABLE users (
 
 INSERT INTO users (firstname, lastname, email, password, country_code, numero_tel, date_inscription, date_paiement, status_paiement, duree_abonnement, amount_to_pay, user_category, type_user)
 VALUES
-('Lionel', 'TOTON', 'totonlionel@gmail.com', '$2b$10$avfInxCAPcG0wn0ZLs49l.ZL1d5/3H0Zfo241z3RS02Q2Sklc0DrS', '229' ,'96769716', '2024-01-02', '2024-02-02', true, 365, 15000 ,'entreprise', 'simple');
+('Lionel', 'TOTON', 'userabonnee@gmail.com', '$2b$10$avfInxCAPcG0wn0ZLs49l.ZL1d5/3H0Zfo241z3RS02Q2Sklc0DrS', '229' ,'96769716', '2024-01-02', '2024-02-02', true, 365, 15000 ,'entreprise', 'simple');
 
 
 
 
-INSERT INTO users (firstname, lastname, email, password, numero_tel, date_inscription, date_paiement, status_paiement, duree_abonnement, user_category, type_user)
-VALUES 
-('Lionel', 'TOTON', 'totonlionel@gmail.com', '$2b$10$avfInxCAPcG0wn0ZLs49l.ZL1d5/3H0Zfo241z3RS02Q2Sklc0DrS', '96769716', '2024-01-02', '2024-02-02', true, 365, 'entreprise', 'simple');
+INSERT INTO users (firstname, lastname, email, password, country_code, numero_tel, date_inscription, date_paiement, status_paiement, duree_abonnement, amount_to_pay, user_category, type_user)
+VALUES
+('Lionel', 'TOTON', 'usernonabonnee@gmail.com', '$2b$10$avfInxCAPcG0wn0ZLs49l.ZL1d5/3H0Zfo241z3RS02Q2Sklc0DrS', '229' ,'96769716', '2024-01-02', '2024-02-02', true, 365, 15000 ,'entreprise', 'simple');
+
 
 
 
