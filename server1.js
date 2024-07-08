@@ -35,8 +35,10 @@ app.use(flash());
 
 // Configuration de la session avec Redis
 const redisClient = createClient({
-  url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
-  password: process.env.REDIS_PASSWORD,
+  host: process.env.REDIS_HOST || 'localhost',
+  port: process.env.REDIS_PORT || 6379,
+  // Ajoutez le mot de passe Redis si nécessaire
+  password: process.env.REDIS_PASSWORD || undefined,
 });
 
 const sessionConfig = {
