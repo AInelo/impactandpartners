@@ -1,4 +1,5 @@
-import BaseModel from './BaseModel.js';
+// Remplacez l'importation ES6 par une require
+const BaseModel = require('./BaseModel');
 
 class ComptesModel extends BaseModel {
   constructor() {
@@ -19,10 +20,12 @@ class ComptesModel extends BaseModel {
     const query = `SELECT * FROM comptes WHERE classes_comptes_id = $1`;
     return await this.query(query, [classesComptesId]);
   }
+
   async getByClassesComptesIdForAdvice(classesComptesId) {
     const query = `SELECT nbr, name FROM comptes WHERE classes_comptes_id = $1`;
     return await this.query(query, [classesComptesId]);
   }
 }
 
-export default ComptesModel;
+// Exportez la classe en utilisant module.exports
+module.exports = ComptesModel;

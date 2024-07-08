@@ -1,5 +1,5 @@
-// import Database from '../db/connexionDb.js';
-import Database from "../../../db/connexionDb.js";
+// Remplacez l'importation ES6 par une require
+const Database = require("../../../db/connexionDb");
 
 class BaseModel {
   constructor() {
@@ -16,4 +16,5 @@ class BaseModel {
   }
 }
 
-export default BaseModel;
+// Exportez la classe en utilisant module.exports
+module.exports = BaseModel;

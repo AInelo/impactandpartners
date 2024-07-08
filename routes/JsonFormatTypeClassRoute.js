@@ -1,8 +1,8 @@
-import { Router } from "express";
-const router = Router();
-import JsonFormatTypeClassController from "../controllers/JsonFormatTypeClassController.js";
-const map = new JsonFormatTypeClassController;
+const express = require('express');
+const router = express.Router();
+const JsonFormatTypeClassController = require('../controllers/JsonFormatTypeClassController.js');
+const map = new JsonFormatTypeClassController();
 
-router.get("/getmapbytypeclasse/:typeClasseId", JsonFormatTypeClassController.buildHierarchyByTypeClasseId);
+router.get('/getmapbytypeclasse/:typeClasseId', JsonFormatTypeClassController.buildHierarchyByTypeClasseId);
 
-export default router;
+module.exports = router;

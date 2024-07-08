@@ -122,8 +122,7 @@
                 <label for="btn-radio-basic-3" type="button" class="btn">Particulier</label>
               </div>
             </div>
-            <!-- <button id="get-value-button">Obtenir la valeur sélectionnée</button> -->
-            <!-- <p id="selected-value">Valeur sélectionnée : <span></span></p>  -->
+            
             <div class="mb-3">
               <label class="form-check">
                 <input type="checkbox" class="form-check-input"/>
@@ -140,156 +139,65 @@
         </div>
       </div>
     </div>
+
+
+    
+              <!--START BAD INFORMATION MODAL -->
+  
+              <div class="modal modal-blur fade" id="modal-danger" tabindex="-1" aria-modal="true" role="dialog">
+                <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <button type="button" class="btn-close modal-closer"  data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-status bg-danger"></div>
+                    <div class="modal-body text-center py-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+                      <h3>Information !</h3>
+                      <div id="modal-danger-text" class="text-muted">Vous êtes connecté déjà sur un appareil. Deconnectez-vous d'abord !</div>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="w-100">
+                        <div class="row">
+                          <div class="col">
+                            <a href="#" class="btn btn-danger w-100 modal-closer" data-bs-dismiss="modal">
+                              Fermer
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                        <!--END BAD INFORMATION MODAL -->
+          
+                        <!--START GOOD INFORMATION MODAL -->
+          
+              <div class="modal modal-blur fade" id="modal-success" tabindex="-1" aria-modal="true">
+                <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <button type="button" class="btn-close modal-closer" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-status bg-success"></div>
+                    <div class="modal-body text-center py-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-green icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path><path d="M9 12l2 2l4 -4"></path></svg>
+                      <h3>Bonne nouvelle !</h3>
+                      <div id="modal-success-text" class="text-muted">Vous êtes connecté</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                        <!--START GOOD INFORMATION MODAL -->
+          
+
+
+
     <!-- Libs JS -->
     <!-- Tabler Core -->
     <script src="./dist/js/tabler.min.js?1684106062" defer></script>
     <script src="./dist/js/demo.min.js?1684106062" defer></script>
     <!-- Axios Libs -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-      
+    <script src="./sign-up/sign-up.js"></script>  
+    <!-- <script src="./sign-up/sign-up-modal.js"></script>   -->
 
-    <script>
-      document.getElementById('password1Show').addEventListener('click', (e) => {
-        e.preventDefault();
-        var password1Input = document.getElementById('password1');
-
-        password1Input.type === 'password' ? password1Input.type = 'text' : password1Input.type = 'password';
-
-      });
-      document.getElementById('password2Show').addEventListener('click', function (e) {
-        e.preventDefault();
-        var password2Input = document.getElementById('password2');
-
-        password2Input.type === 'password' ? password2Input.type = 'text' : password2Input.type = 'password';
-
-      });
-    </script>
-
-
-      <script>
-        function WhichBoxChecked () {
-          const radios = document.querySelectorAll('input[name="btn-radio-basic"]');
-          let selectedValue = null;
-          for (const radio of radios) {
-            if (radio.checked) {
-              selectedValue = radio.value;
-             
-              break;
-            }
-          }
-          return selectedValue
-        }
-
-        function getCodeCountrySelectedValue(selectId) {
-          const selectElement = document.getElementById(selectId);
-          if (selectElement) {
-            return selectElement.value;
-          } else {
-            console.error(`Element with ID ${selectId} not found.`);
-            return null;
-          }
-        }
-        function getCurrentDateISO() {
-          const now = new Date();
-          return now.toISOString();
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-          const todayISO = getCurrentDateISO();
-          console.log(todayISO);  
-                
-        })
-       
-
-
-      const registerButton = document.getElementById("registerButton");
-          
-
-      registerButton.addEventListener("click", async function (e) {
-
-        e.preventDefault();
-        const firstname = document.getElementById("firstname").value;
-        const lastname = document.getElementById("lastname").value;
-        const email = document.getElementById("email").value;
-        const country_code = getCodeCountrySelectedValue('country-code-select');
-        const numero_tel = document.getElementById('numero_tel').value;
-        const TodayDate = new Date()
-        const user_category = WhichBoxChecked();
-        const todayISODate = getCurrentDateISO();
-
-
-
-        const password1 = document.getElementById("password1").value;
-        const password2 = document.getElementById("password2").value;
-
-
-        // Vérifier si les champs email et password ne sont pas vides
-        if (!email || !password1) {
-          alert("Veuillez saisir votre nom d'utilisateur et votre mot de passe.");
-          return;
-        }
-        //
-        InformalData = {
-                  
-            firstname :firstname ,
-            lastname: lastname, 
-            email: email, 
-            country_code: country_code, 
-            numero_tel: numero_tel, 
-            date_inscription: todayISODate, 
-            user_category: user_category, 
-            type_user: 'simple'
-
-        }
-        try {
-          UserFinalFormaliseResponse = await axios.post("/formalise", InformalData)
-
-          UserFinalFormalise = UserFinalFormaliseResponse.data;
-
-          try {
-                  // Envoyer les données informelles pour formaliser la réponse
-                  const UserFinalFormaliseResponse = await axios.post("/formalise", InformalData);
-                  const UserFinalFormalise = UserFinalFormaliseResponse.data;
-
-                  try {
-                    // Envoyer les données d'inscription
-                    const registerResponse = await axios.post("/register", {
-                      firstname: UserFinalFormalise.firstname,
-                      lastname: UserFinalFormalise.lastname,
-                      email: UserFinalFormalise.email,
-                      password: password1, 
-                      password2: password2,
-                      country_code: UserFinalFormalise.country_code,
-                      numero_tel: UserFinalFormalise.numero_tel,
-                      date_inscription: UserFinalFormalise.date_inscription,
-                      date_paiement: UserFinalFormalise.date_paiement,
-                      amount_to_pay: UserFinalFormalise.amount_to_pay,
-                      user_category: UserFinalFormalise.user_category,
-                      type_user: UserFinalFormalise.type_user,
-                      // duree_abonnement: UserFinalFormalise.duree_abonnement
-                      duree_abonnement: 0
-
-                    });
-
-                    console.log("Inscription réussie :", registerResponse);
-                    window.location.href = "/login";
-                  } catch (registerError) {
-                    console.error("Erreur lors de la création du compte :", registerError);
-                    alert("Erreur lors de la création du compte, veuillez réessayer.");
-                  }
-                } catch (formaliseError) {
-                  console.error("Erreur lors de la formalisation des données :", formaliseError);
-                  alert("Erreur lors de la formalisation des données, veuillez réessayer.");
-                }
-
-        } catch (error) {
-          console.error("Erreur lors de la formalisation des données :", formaliseError);
-          alert("Erreur lors de la formalisation des données, veuillez réessayer.");
-        }
-
-      });
-   
-    </script>
-  
   </body>
 </html>

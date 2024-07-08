@@ -1,27 +1,22 @@
-import express from 'express';
-import { urlencoded, json } from 'express';
-import passport from 'passport';
-import flash from 'express-flash';
-import session from 'express-session';
-import dotenv from 'dotenv';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import Database from './db/connexionDb.js'; // Importer votre classe Database
-import comptes from './routes/comptesRoutes.js';
-import users from './routes/usersRoutes.js';
-import payment from './routes/fedapayTransactionRoutes.js';
-import typeclassemap from './routes/JsonFormatTypeClassRoute.js';
-import openaimodelcompta from './routes/OpenaiRoutes.js';
-import initializePassport from './passportConfig.js';
-import Redis from 'ioredis';
-import RedisStore from 'connect-redis';
+const express = require('express');
+const session = require('express-session');
+const passport = require("passport");
+const flash = require('express-flash');
+const RedisStore = require('connect-redis').default;
+const { createClient } = require('redis');
+const dotenv = require('dotenv');
+const path = require('path');
+const Database = require('./db/connexionDb.js');
+const comptes = require('./routes/comptesRoutes.js');
+const users = require('./routes/usersRoutes.js');
+const payment = require('./routes/fedapayTransactionRoutes.js');
+const typeclassemap = require('./routes/JsonFormatTypeClassRoute.js');
+const openaimodelcompta = require('./routes/OpenaiRoutes.js');
+const emailRoutes = require('./routes/Email/emailRoutes.js');
+const initializePassport = require('./passportConfig.js');
 
 // Charger les variables d'environnement
 dotenv.config();
-
-// Définir __dirname en utilisant import.meta.url
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Initialiser l'application Express
 const app = express();
@@ -34,24 +29,23 @@ app.use(express.static(initial_path));
 initializePassport(passport);
 
 // Configurer les middlewares
-app.use(urlencoded({ extended: true }));
-app.use(json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(flash());
 
 // Configuration de la session avec Redis
-const redisClient = new Redis({
-  host: process.env.REDIS_HOST || 'localhost', // Assurez-vous de définir REDIS_HOST dans votre fichier .env
-  port: process.env.REDIS_PORT || 6379, // Assurez-vous de définir REDIS_PORT dans votre fichier .env
-  password: process.env.REDIS_PASSWORD || 'lionel',
+const redisClient = createClient({
+  host: process.env.REDIS_HOST || 'localhost',
+  port: process.env.REDIS_PORT || 6379,
+  // Ajoutez le mot de passe Redis si nécessaire
+  password: process.env.REDIS_PASSWORD || undefined,
 });
 
 const sessionConfig = {
+  store: new RedisStore({ client: redisClient }),
   secret: process.env.SESSION_SECRET || 'secret',
   resave: false,
   saveUninitialized: false,
-  store: new RedisStore({
-    client: redisClient,
-  }),
 };
 
 app.use(session(sessionConfig));
@@ -65,23 +59,33 @@ app.use('/api/v1/comptes', comptes);
 app.use('/api/comptemap', typeclassemap);
 app.use('/api/v2/payment', payment);
 app.use('/api/advice', openaimodelcompta);
+app.use('/api/email', emailRoutes);
 app.use('/', users);
 
 const port = process.env.PORT || 3000;
 
 const start = async () => {
-  const db = new Database(); // Initialiser votre instance de base de données
+  const db = new Database();
   const query = 'SELECT NOW();';
   try {
-    await db.pool.connect(); // Se connecter à la base de données
+    // Connexion à Redis
+    await redisClient.connect();
+    console.log('Connecté à Redis !');
+
+    // Connexion à la base de données
+    await db.pool.connect();
     console.log('La base de données est connectée!');
+    
+    // Vérification de la connexion à la base de données
     const result = await db.query(query);
     console.log(result);
+
+    // Démarrage du serveur Express
     app.listen(port, () => {
       console.log(`Le serveur écoute sur : http://localhost:${port}`);
     });
   } catch (error) {
-    console.error('Erreur lors de la connexion à la base de données :', error);
+    console.error('Erreur lors de la connexion :', error);
   }
 };
 

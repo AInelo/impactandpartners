@@ -119,7 +119,7 @@ async function InCaseAbonnementActive () {
                   <div class="card-body">
                     <div class="row align-items-center">
                       <div class="col-3">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/lasmo-74fe3.appspot.com/o/AdobeStock_131814515.jpeg?alt=media&token=c30a4b91-9730-4119-bc13-6ed6750ef00a" alt="Food Deliver UI dashboards" class="rounded">
+                        <img src="./static/profildashboard/abonnement.jpeg" alt="Food Deliver UI dashboards" class="rounded">
                       </div>
                       <div class="col">
                         <h3 class="card-title mb-1">

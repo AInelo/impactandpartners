@@ -1,9 +1,7 @@
-import { Router } from "express";
-const router = Router();
-import OpenaiTexteController from "../controllers/OpenaiContoller.js";
+const express = require('express');
+const router = express.Router();
+const OpenaiTexteController = require('../controllers/OpenaiContoller.js');
 
+router.post('/get-advice-gpt', OpenaiTexteController.generateAdviceForComptaAccountChoice);
 
-router.post("/get-advice-gpt", OpenaiTexteController.generateAdviceForComptaAccountChoice);
-
-
-export default router;
+module.exports = router;

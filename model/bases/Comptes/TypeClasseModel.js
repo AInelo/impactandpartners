@@ -1,8 +1,9 @@
-import BaseModel from './BaseModel.js';
-import ClassesComptesModel from './ClasseCompteModel.js';
-import ComptesModel from './CompteModel.js';
-import SousComptesModel from './SousCompteModel.js';
-import ComptesInfModel from './CompteInfModel.js';
+// Remplacez les importations ES6 par des require
+const BaseModel = require('./BaseModel');
+const ClassesComptesModel = require('./ClasseCompteModel');
+const ComptesModel = require('./CompteModel');
+const SousComptesModel = require('./SousCompteModel');
+const ComptesInfModel = require('./CompteInfModel');
 
 class TypesClasseModel extends BaseModel {
   constructor() {
@@ -19,11 +20,9 @@ class TypesClasseModel extends BaseModel {
     return await this.query(query, [id]);
   }
 
-
   static async buildHierarchyByTypeClasseId(typeClasseId) {
     try {
-     
-      console.log(typeClasseId)
+      console.log(typeClasseId);
       const typesClasseModel = new TypesClasseModel();
       const classesComptesModel = new ClassesComptesModel();
       const comptesModel = new ComptesModel();
@@ -33,7 +32,7 @@ class TypesClasseModel extends BaseModel {
       const typeClasse = await typesClasseModel.getById(typeClasseId);
 
       if (!typeClasse.length) {
-        return res.status(404).json({ message: `TypeClasse with ID ${typeClasseId} not found` });
+        throw new Error(`TypeClasse with ID ${typeClasseId} not found`);
       }
 
       const classesComptes = await classesComptesModel.getByTypesClasseId(typeClasseId);
@@ -66,7 +65,7 @@ class TypesClasseModel extends BaseModel {
       return jsonResult;
     } catch (error) {
       console.error('Error building hierarchy:', error);
-    
+      throw error; // Renvoie l'erreur pour une gestion ultérieure
     }
   }
 
@@ -83,7 +82,7 @@ class TypesClasseModel extends BaseModel {
     }
     return JSON.parse(JSON.stringify(obj, replacer));
   }
-
 }
 
-export default TypesClasseModel;
+// Exportez la classe en utilisant module.exports
+module.exports = TypesClasseModel;

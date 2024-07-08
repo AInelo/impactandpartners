@@ -1,9 +1,7 @@
 // models/OpenaiTexteModel.js
-import axios from 'axios';
-import dotenv from 'dotenv';
-import OpenAI from 'openai';
-
-dotenv.config();
+const axios = require('axios');
+require('dotenv').config();
+const { OpenAI } = require('openai');
 
 const apiKey = process.env.OPENAI_API_KEY;
 
@@ -17,9 +15,7 @@ const openai = new OpenAI({
 });
 
 class OpenaiTexteModel {
-    static async generateText (prompt) {
-        // console.log('the API key is: ' + openai.apiKey);
-
+    static async generateText(prompt) {
         try {
             const completion = await openai.chat.completions.create({
                 messages: [
@@ -36,4 +32,4 @@ class OpenaiTexteModel {
     }
 }
 
-export default OpenaiTexteModel;
+module.exports = OpenaiTexteModel;

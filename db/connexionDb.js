@@ -1,7 +1,8 @@
-import dotenv from "dotenv";
+const dotenv = require('dotenv');
+const { Pool } = require('pg');
+
+// Charger les variables d'environnement
 dotenv.config();
-import pkg from 'pg';
-const { Pool } = pkg;
 
 class Database {
   constructor() {
@@ -14,7 +15,6 @@ class Database {
     });
   }
 
-
   async query(sql, params) {
     try {
       const result = await this.pool.query(sql, params);
@@ -26,4 +26,4 @@ class Database {
   }
 }
 
-export default Database;
+module.exports = Database;

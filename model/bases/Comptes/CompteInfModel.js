@@ -1,4 +1,5 @@
-import BaseModel from './BaseModel.js';
+// Remplacez l'importation ES6 par une require
+const BaseModel = require('./BaseModel');
 
 class ComptesInfModel extends BaseModel {
   constructor() {
@@ -26,4 +27,5 @@ class ComptesInfModel extends BaseModel {
   }
 }
 
-export default ComptesInfModel;
+// Exportez la classe en utilisant module.exports
+module.exports = ComptesInfModel;

@@ -1,17 +1,15 @@
-import { Router } from 'express';
-const router = Router();
-// const bcrypt = require('bcrypt');
-import UserPayment from "../controllers/fedapayTransactionController.js";
+const express = require('express');
+const router = express.Router();
+const UserPayment = require('../controllers/fedapayTransactionController.js');
 
-// const { signUp, signIn } = require('../controllers/userController')
-router.route('/getserveururl').get( UserPayment.getServerUrl)
+router.get('/getserveururl', UserPayment.getServerUrl);
 
-router.route('/getCountry/:countryCode').get(UserPayment.getCountryByCountryCode);
+router.get('/getCountry/:countryCode', UserPayment.getCountryByCountryCode);
 
-router.route('/createtransaction').post(UserPayment.createFedaTransaction);
+router.post('/createtransaction', UserPayment.createFedaTransaction);
 
-router.route('/generate-token').post(UserPayment.generateTokenTransaction);
+router.post('/generate-token', UserPayment.generateTokenTransaction);
 
-router.route('/callback').get(UserPayment.callback)
+router.get('/callback', UserPayment.callback);
 
-export default router;
+module.exports = router;
