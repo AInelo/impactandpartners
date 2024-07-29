@@ -1,28 +1,32 @@
 //-------- Verify if the User has an abonnement ----------------//
 
-// import axios from "axios";
+async function freemiumOption(inscriptionDate) {
+  const todayDate = new Date();
+
+  // Convertir les deux dates en millisecondes depuis l'epoch (1er janvier 1970)
+  const inscriptionTime = new Date(inscriptionDate).getTime();
+  const todayTime = todayDate.getTime();
+
+  // Calculer la différence en millisecondes
+  const differenceInMilliseconds = todayTime - inscriptionTime;
+
+  // 24 heures en millisecondes
+  const twentyFourHoursInMilliseconds = 24 * 60 * 60 * 1000;
+
+  // Vérifier si la différence est supérieure à 24 heures
+  if (differenceInMilliseconds <= twentyFourHoursInMilliseconds) {
+    console.log("Moins de 24 heures se sont écoulées depuis l'inscription.");
+
+    return true; 
+  } else {
+    console.log("Plus de 24 heures se sont écoulées depuis l'inscription.");
+
+    return false; 
+  }
+}
 
 
-// {
-//   "user": {
-//       "users_id": 3,
-//       "firstname": "Lionel",
-//       "lastname": "TOTON",
-//       "email": "totonlion2002@gmail.com",
-//       "country_code": 229,
-//       "numero_tel": "96545055",
-//       "date_inscription": "2024-05-20T22:00:00.000Z",
-//       "date_paiement": null,
-//       "status_paiement": false,
-//       "duree_abonnement": 1095,
-//       "amount_to_pay": 1000,
-//       "user_category": "etudiant",
-//       "type_user": "simple"
-//   }
-// }
-
-
-async function DisplayPaymentBoxForUnPayment() {
+async function displayPaymentBoxForUnPayment() {
   const PaymentBoxDOM = document.getElementById('BigPaymentBox')
   try {
     const response = await axios.post('/user')
@@ -36,8 +40,8 @@ async function DisplayPaymentBoxForUnPayment() {
         user_category : UserCategory
       } = user;
 
-      result = ` 
-      <div class="PaymentBox modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
+      result = 
+    `<div class="PaymentBox modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
 
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -109,7 +113,7 @@ async function DisplayPaymentBoxForUnPayment() {
           </div>
         </div>
       </div>
-    </div> `
+    </div>`
     PaymentBoxDOM.innerHTML = result
 
 
@@ -135,14 +139,40 @@ async function DisplayPaymentBoxForUnPayment() {
   }
 }
 
-async function VerifyAbonnement() {
+
+async function verifyPossibilityOfFreemium(){
+  try {
+    const response = await axios.post('/user')
+  } catch (error) {
+    
+  }
+}
+
+const showPayementBox = () => {
+  const PaymentBox = document.getElementById('modal-report');
+  if (PaymentBox) {
+    PaymentBox.style.display = 'block';
+    PaymentBox.classList.add('show');
+  } else {
+    console.log('Element with id "modal-report" not found.');
+  }
+}
+
+
+
+
+async function verifyAbonnement() {
   try {
     const response = await axios.post('/user');
     const user = response.data.user;
 
     if (user) {
-      const { status_paiement: UserStatuAbonnement } = user;
-      return UserStatuAbonnement === true;
+      // Récupérer les informations de l'utilisateur pour l'autorisation
+      const userDetailForAuthorization = {
+        statusAbonnement: user.status_paiement,
+        inscriptionDate: user.date_inscription
+      };
+      return userDetailForAuthorization;
     } else {
       console.log('No User Connected');
       return false;
@@ -153,34 +183,32 @@ async function VerifyAbonnement() {
   }
 }
 
-const ShowPayementBox = () => {
-  const PaymentBox = document.getElementById('modal-report');
-  if (PaymentBox) {
-    PaymentBox.style.display = 'block';
-    PaymentBox.classList.add('show');
-  } else {
-    console.log('Element with id "modal-report" not found.');
-  }
-}
+
 
 async function mainByAbonnementStatus() {
   try {
     console.log("Starting main function...");
-    const isAbonnementValid = await VerifyAbonnement();
-    console.log("isAbonnementValid = :", isAbonnementValid);
-    if (isAbonnementValid === true) {
-      console.log('Yes he has an abonnement!');
-   
+    const { statusAbonnement, inscriptionDate } = await verifyAbonnement();
+    const isFreemiumValid = await freemiumOption(inscriptionDate);
+
+  if (isFreemiumValid === true) {
+      console.log('The Freemieum Mode is Active')
+  } else {
+      if (statusAbonnement === true) {
+      console.log('Yes, the user has an abonnement!');
     } else {
-      console.log("No he doesn't have an abonnement!");
-     await DisplayPaymentBoxForUnPayment()
-      ShowPayementBox(); 
+      console.log("No, the user doesn't have an abonnement!");
+      await displayPaymentBoxForUnPayment();
+      showPayementBox();
     }
-    console.log('Abonne has an abonnement: ' + isAbonnementValid); 
+  }
+
+    
   } catch (error) {
     console.error('An error occurred:', error);
   }
 }
+
 
 mainByAbonnementStatus();
 
