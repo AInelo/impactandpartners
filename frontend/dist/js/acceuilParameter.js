@@ -1,35 +1,111 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    const containertButtonDashboard = document.getElementById('containertButtonDashboard');
+// Modèle pour User (pour une meilleure compréhension, ce n'est pas strictement nécessaire)
+class User {
+    constructor(firstname, lastname) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+    }
 
+    static async getUser() {
+        try {
+            const response = await axios.post("/user");
+            return response.data.user; 
+        } catch (error) {
+            console.error('Erreur lors de la récupération des informations de l\'utilisateur:', error);
+            return null;
+        }
+    }
 
-    try {
-        const userResponse = await axios.post("/user");
+    static async freemiumOption(inscriptionDate) {
 
-        const user = userResponse.data.user;
+        const todayDate = new Date();
+    
+        const inscriptionTime = new Date(inscriptionDate).getTime();
+    
+        const todayTime = todayDate.getTime();
+    
+        const differenceInMilliseconds = todayTime - inscriptionTime;
+      
+        const twentyFourHoursInMilliseconds = 24 * 60 * 60 * 1000;
+    
+       return differenceInMilliseconds <= twentyFourHoursInMilliseconds ? true : false
+    }
+    
+}
 
-        if (userResponse.data.user) {
-            const user = userResponse.data.user;
-            
-            // Récupérer le nom de famille en minuscules depuis les informations de l'utilisateur
-            const firstNameLowercase = user.firstname.toLowerCase();
-            const UserFirstName = user.firstname;
-            const UserLastname = user.lastname;
-            console.log("Bienvenue: " + UserLastname + UserFirstName);
+class DisplayManager {
+    static generateButtonHeroForAbonneetUser(user){
+        const firstNameLowercase = user.firstname.toLowerCase();
+        console.log("Profil de : " + user.lastname + " " + user.firstname);
         
-            ButtonDashboard = `<div class="gradient-button">
-                                    <a id="" href="/dashboard/${firstNameLowercase}" data-path="/dashboard/${firstNameLowercase}" >
-                                    <i class="fa fa-user"></i> Mon Compte
-                                    </a>
-                                </div>`;
-            
-            containertButtonDashboard.innerHTML = ButtonDashboard;
+        return `<div class="white-button first-button scroll-to-section">
+                      <a href="#contact">Abonnement Actif 😇👍🏽
+                      </a>
+                    </div>
+                    <div   class="white-button scroll-to-section">
+                        <a href="/plancomptable/${firstNameLowercase}"> Allez au Plan
+                        <i class="fa fa-play-circle" aria-hidden="true"></i>
+                      </a>
+                </div>`;
+    }
+
+    static generateButtonDashboard(user) {
+        const firstNameLowercase = user.firstname.toLowerCase();
+        console.log("Bienvenue: " + user.lastname + " " + user.firstname);
+        
+        return `<div class="gradient-button">
+                    <a href="/dashboard/${firstNameLowercase}" data-path="/dashboard/${firstNameLowercase}">
+                        <i class="fa fa-user"></i> Mon Compte
+                    </a>
+                </div>`;
+    }
+    
+    static generateButtonHero(user) {
+        const firstNameLowercase = user.firstname.toLowerCase();
+        console.log("Profil de : " + user.lastname + " " + user.firstname);
+        
+        return `<div class="white-button first-button scroll-to-section">
+                      <a href="#contact">Mode Essai Activé 
+                      </a>
+                    </div>
+                    <div   class="white-button scroll-to-section">
+                        <a href="/plancomptable/${firstNameLowercase}"> Allez au Plan
+                        <i class="fa fa-play-circle" aria-hidden="true"></i>
+                      </a>
+                </div>`;
+    }
+    
+    static displayContent(user, container, generateButton) {
+        if (user) {
+            const buttonHtml = generateButton(user);
+            container.innerHTML = buttonHtml;
         } else {
-            // Si l'utilisateur est vide, ne rien faire ou afficher un message d'erreur
             console.log("L'utilisateur est vide.");
         }
+    }
+}
 
-    } catch (error) {
-        console.error("Erreur lors de la récupération des informations de l'utilisateur :", userResponse.data.message);
-        alert("Erreur lors de la récupération des informations de l'utilisateur. Veuillez réessayer.");
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const containertButtonDashboard = document.getElementById('containertButtonDashboard');
+    const containerGeneratedHeroButton = document.getElementById('containerGeneratedHeroButton');
+    const containerServiceButtonGenerated = document.getElementById('containerServiceButtonGenerated');
+
+    const user = await User.getUser();
+
+    if(user){
+        DisplayManager.displayContent(user, containertButtonDashboard, DisplayManager.generateButtonDashboard);
+    } 
+    
+    if(user && User.freemiumOption(user.date_inscription) ) {
+        console.log('Vous êtes en mode gratuit')
+        DisplayManager.displayContent(user, containerServiceButtonGenerated, DisplayManager.generateButtonDashboard)
+        DisplayManager.displayContent(user, containerGeneratedHeroButton, DisplayManager.generateButtonHero)
+
+    }
+
+    if(user.status_paiement){
+        console.log('Vous êtes en mode gratuit')
+        DisplayManager.displayContent(user, containerServiceButtonGenerated, DisplayManager.generateButtonDashboard)
+        DisplayManager.displayContent(user, containerGeneratedHeroButton, DisplayManager.generateButtonHeroForAbonneetUser)
     }
 });

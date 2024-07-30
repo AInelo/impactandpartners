@@ -140,14 +140,6 @@ async function displayPaymentBoxForUnPayment() {
 }
 
 
-async function verifyPossibilityOfFreemium(){
-  try {
-    const response = await axios.post('/user')
-  } catch (error) {
-    
-  }
-}
-
 const showPayementBox = () => {
   const PaymentBox = document.getElementById('modal-report');
   if (PaymentBox) {
@@ -203,7 +195,6 @@ async function mainByAbonnementStatus() {
     }
   }
 
-    
   } catch (error) {
     console.error('An error occurred:', error);
   }
@@ -222,7 +213,8 @@ const getClassesAndDisplayByTypesClasse = async (id, classesDomm) => {
       data: { classes },
     } = await axios.get(`/api/v1/comptes/allclassesbyid/${id}`);
     if (!classes || classes.length < 1) {
-      return;
+      classesDOM.innerHTML = '<h5 class="empty-list">There was an error, please try later....</h5>';
+      // return;
     } 
     const allClasses = classes
       .map((classe) => {
@@ -419,9 +411,8 @@ const getAllComptes_infById = async (id) => {
 
     if (!comptes_inf || comptes_inf.length < 1) {
       ComptesInfDOM.innerHTML = '<h3 class="empty-list">il n\'y a plus de suite , sélectionné un autre sous_comptes, merci !</h3>';
-    }
-
-    const allComptesInf = comptes_inf
+    } else {
+      const allComptesInf = comptes_inf
       .map((CompteInf) => {
         const { id, name, nbr } = CompteInf;
 
@@ -446,9 +437,8 @@ const getAllComptes_infById = async (id) => {
       })
       .join("");
 
-      
       ComptesInfDOM.innerHTML = allComptesInf;
-
+    }
   } catch (error) {
     console.error("l'erreur", error);
     ComptesInfDOM.innerHTML =
@@ -471,42 +461,37 @@ const getSousComptesAndDisplayByComptes = async (id) => {
     const {
       data: { sous_comptes },
     } = await axios.get(`/api/v1/comptes/allsouscomptesbyid/${id}`);
-    if (sous_comptes.length < 1) {
-      sousComptesDOM.innerHTML =
-        '<h3 class="empty-list">il n\'y a pas de sous_comptes sélectionné un autre comptes, merci !</h3>';
-      // return
-    }
-    const allSousComptes = sous_comptes
-      .map((sous_compte) => {
-        const { id, name, nbr } = sous_compte;
+    if (!sous_comptes || sous_comptes.length < 1) {
+      sousComptesDOM.innerHTML = '<h3 class="empty-list">il n\'y a plus de suite , sélectionné un autre sous_comptes, merci !</h3>';
+    } else {
+        const allSousComptes = sous_comptes
+          .map((sous_compte) => {
+            const { id, name, nbr } = sous_compte;
 
-        return ` 
-          <div class="row">
-            <div id=${nbr} class="col-auto">
-              <span class="avatar" style="background-image: url(./assets/images/accounting.png)"></span>
-            </div>
-            <div class="col">
-          
-            <div class="badge bg-primary"></div>
-          
-                <strong>${nbr} ||</strong> ${name}
-              </div>
-              <div class="wrapperComptes">
-                <div id="${id}" name="sous_comptes" class="descriptionClass">Description</div>
-                <button id="${id}" class="sous_comptes button-80" role="button">Voir plus</button>
-              </div>
+            return ` 
+              <div class="row">
+                <div id=${nbr} class="col-auto">
+                  <span class="avatar" style="background-image: url(./assets/images/accounting.png)"></span>
+                </div>
+                <div class="col">
               
-            </div>
+                <div class="badge bg-primary"></div>
+              
+                    <strong>${nbr} ||</strong> ${name}
+                  </div>
+                  <div class="wrapperComptes">
+                    <div id="${id}" name="sous_comptes" class="descriptionClass">Description</div>
+                    <button id="${id}" class="sous_comptes button-80" role="button">Voir plus</button>
+                  </div>
+                </div>                
+              </div>`;
+          })
+          .join("");
+          sousComptesDOM.innerHTML = allSousComptes;
 
-            
-          </div>`;
-      })
-      .join("");
-
-    // const firstClassComptesName = comptes[0].class_comptes_name;
-
-    sousComptesDOM.innerHTML = allSousComptes;
-    // nameOfAllComptesDOM.innerText = firstClassComptesName ;
+        // const firstClassComptesName = comptes[0].class_comptes_name;
+        // nameOfAllComptesDOM.innerText = firstClassComptesName ;
+      }
   } catch (error) {
     console.error("l'erreur", error);
     sousComptesDOM.innerHTML =
@@ -526,39 +511,35 @@ const getComptesAndDisplayByClasse = async (id) => {
       data: { comptes },
     } = await axios.get(`/api/v1/comptes/allcomptesbyid/${id}`);
     if ( !comptes || comptes.length < 1) {
-      return;
-    }
-    const allComptes = comptes
-      .map((compte) => {
-        const { cc_name, id, name, nbr } = compte;
-
-        return ` 
-          <div class="row">
-            <div id=${nbr} class="col-auto">
-              <span class="avatar" style="background-image: url(./assets/images/accounting.png)"></span>
-            </div>
-            <div class="col">
-           
-            <div class="badge bg-primary"></div>
-          
-                <strong>${nbr} ||</strong> ${name}
-              </div>
-              <div class="wrapperComptes">
-                <div id="${id}" name="comptes" class="descriptionClass">Description</div>
-                <button id="${id}" class="comptes button-80" role="button">Voir sous comptes</button>
-              </div>
+      ComptesDOM.innerHTML = '<h3 class="empty-list">il n\'y a plus de suite , sélectionné un autre sous_comptes, merci !</h3>'
+    } else {
+        const allComptes = comptes
+          .map((compte) => {
+            const { cc_name, id, name, nbr } = compte;
+            return ` 
+              <div class="row">
+                <div id=${nbr} class="col-auto">
+                  <span class="avatar" style="background-image: url(./assets/images/accounting.png)"></span>
+                </div>
+                <div class="col">
               
-            </div>
+                <div class="badge bg-primary"></div>
+              
+                    <strong>${nbr} ||</strong> ${name}
+                  </div>
+                  <div class="wrapperComptes">
+                    <div id="${id}" name="comptes" class="descriptionClass">Description</div>
+                    <button id="${id}" class="comptes button-80" role="button">Voir sous comptes</button>
+                  </div>
+                </div>
+              </div>`;
+          })
+          .join("");
 
-            
-          </div>`;
-      })
-      .join("");
-
-    const firstClassComptesName = comptes[0].cc_name;
-
-    ComptesDOM.innerHTML = allComptes;
-    nameOfAllComptesDOM.innerText = firstClassComptesName;
+        const firstClassComptesName = comptes[0].cc_name;
+        ComptesDOM.innerHTML = allComptes;
+        nameOfAllComptesDOM.innerText = firstClassComptesName;
+      }
   } catch (error) {
     console.error("l'erreur", error);
     ComptesDOM.innerHTML =
@@ -580,7 +561,7 @@ const getElementBySearching = async (detaill, id) => {
     const { data: { element } } = await axios.post('/api/v1/comptes/elementsearch', requestBody);
 
     if (!element || element.length < 1) {
-      SearchingResultDOM.innerHTML = '<h5 class="empty-list">No elements found.</h5>';
+      SearchingResultDOM.innerHTML = `<h5 class="empty-list">Pas d'éléments trouvé</h5>`;
       return;
     }
 
@@ -719,18 +700,6 @@ console.log('Fonction Payment trigged')
   }
 
 }
-
-   // try {
-          //   await axios.get('/api/v2/payment/callback', {
-          //     id : transactionId , 
-          //     user_id : UserID , 
-          //     date_paiement : UserdatePaiementDateFormatted , 
-          //     duree_abonnement : UserDureeAbonnementFormalise
-          //   })
-          // } catch (error) {
-          //   console.error("erreur lors de la confirmation et du retour à la page d'acceuil " + error)
-          // }
-
 
 
 
